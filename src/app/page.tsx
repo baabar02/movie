@@ -14,7 +14,7 @@ export default function Home() {
   type FamimlyName = "ads" | "asd";
 
   type myZ = {
-    ner: string;
+    name: string;
     age: number;
     sex: sex;
     isActive: boolean;
@@ -23,13 +23,24 @@ export default function Home() {
 
   const person: Array<myZ> = [
     {
-      ner: "v",
+      name: "v",
       age: 11,
-      sex: male,
+      sex: sex.male,
       isActive: true,
       origin: "asd",
     },
   ];
 
-  return <div>Hello</div>;
+  return <div>
+    {person.map((p, index)=> (
+      <div key={index}>
+        <p>Name: {p.name}</p>
+        <p>Age: {p.age}</p>
+        <p>Sex:{p.sex}</p>
+        <p>Active: {p.isActive ? "yes" : "no"}</p>
+        <p>Origin: {p.origin}</p>
+      </div>
+    )
+    )}
+  </div>;
 }
