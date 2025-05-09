@@ -1,8 +1,8 @@
 "use client";
 
-import { Container } from "./container";
+import { Container } from "./_components/container";
 import { useState } from "react";
-import { Input } from "./input";
+import { Input } from "./_components/input";
 
 export type Person = {
   name?: string;

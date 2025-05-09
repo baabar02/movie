@@ -1,5 +1,5 @@
 import { Input } from "./input";
-import { Person } from "./page";
+import { Person } from "../page";
 
 type ContainerProps = {
   myContacts: Array<Person>;
@@ -18,6 +18,7 @@ export const Container = ({ myContacts }: ContainerProps) => {
     .toString()
     .padStart(2, "0");
   console.log(myContacts);
+  const inputHandler = () => {};
 
   return (
     <div className="w-[350px] h-[700px] border border-green-400 rounded-[8px]">
@@ -25,10 +26,7 @@ export const Container = ({ myContacts }: ContainerProps) => {
         {hours} {minutes}
       </div>
       <h1> Contacts </h1>
-      <Input
-        // onChange={inputHandler}
-        placeholder="search..."
-      />
+      <Input inputHandler={inputHandler} placeholder="search..." />
       {myContacts.map((el, index) => (
         <div key={index} className="flex flex-col">
           <p>{el.name}</p>

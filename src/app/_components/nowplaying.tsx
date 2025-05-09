@@ -7,25 +7,27 @@ import {
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
 
-export const Upcoming = () => {
+export const NowPlay = () => {
   return (
-    <div className="h-[300px] w-[1440px] border border-green-500">
-      <Carousel className="bg-gray-200">
-        <CarouselContent>
+    <div className="relative items-center h-[800px] w-[1440px] border border-green-500">
+      <Carousel className="h-full bg-gray-200">
+        <CarouselContent className="">
           {Array.from({ length: 5 }).map((_, index) => (
             <CarouselItem key={index}>
-              <div className="p-1">
-                <Card>
-                  <CardContent className="flex aspect-square items-center justify-center p-6">
-                    <span className="text-4xl font-semibold">{index + 1} text</span>
+              <div className="">
+                <Card className="h-[800px] border-red-500 bg-yellow-200 rounded-none">
+                  <CardContent className="flex border border-green-300 h-full bg-gray-100 aspect-square items-center justify-center p-6">
+                    <span className=" text-4xl font-semibold">
+                      {index + 1} text
+                    </span>
                   </CardContent>
                 </Card>
               </div>
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-red-200" />
+        <CarouselNext className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-red-200" />
       </Carousel>
     </div>
   );
