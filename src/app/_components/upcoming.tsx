@@ -18,7 +18,7 @@ const Upcoming = () => {
   ];
 
   return (
-    <div className=" h-[980px] w-[1440px] border border-green-400 flex flex-col flex-wrap gap-[10px]">
+    <div className=" h-[980px] w-full max-w-screen-xl border border-green-400 flex flex-col flex-wrap gap-[10px]">
       <div className="flex justify-center space-x-240 items-center">
         <h1 className="text-3xl">Upcoming</h1>
         <p className="h-[20px] cursor-pointer flex">

@@ -10,7 +10,7 @@ import Bottom from "./_components/bottom";
 export default function Home() {
   return (
     <div className="flex flex-col justify-center items-center">
-      <Header />
+      {/* <Header /> */}
       <NowPlay />
       <Upcoming />
       <Popular />

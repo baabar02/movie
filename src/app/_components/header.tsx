@@ -1,22 +1,25 @@
+
+
 "use client";
 import {
   NavigationMenu,
   NavigationMenuContent,
-  NavigationMenuIndicator,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ChevronDown, ChevronRight, Moon, Search } from "lucide-react";
+import { ChevronRight, Moon, Search, Sun } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 
 export const Header = () => {
-  const genreFilter: Array<string> = [
+  const genreFilter: string[] = [
     "Action",
     "Adventure",
     "Animation",
@@ -25,62 +28,98 @@ export const Header = () => {
     "Biography",
     "Crime",
     "Documentary",
-    "Mistery",
+    "Mystery", 
     "Drama",
     "History",
     "Thriller",
   ];
+
+  const { setTheme, resolvedTheme } = useTheme();
+  const isDarkTheme = resolvedTheme === "dark";
+  console.log(resolvedTheme,"d");
+  
+  const toggleTheme = () => setTheme(isDarkTheme ? "light" : "dark");
+
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+ console.log(setSearchQuery,"ss");
+ 
+  };
+
+  useEffect(() =>{
+    window.localStorage.setItem('name', "bbb")
+  },[])
+
   return (
-    <div className="flex flex-row w-[1440px] h-[60px] justify-around items-center border border-green-500 space-x-80">
-      <img className="w-[92px] h-[20px]" src="/Logo.png" alt=""></img>
-      <div className="flex space-x-4">
-        {/* <Button className="w-[97px] h-[36px]" variant="outline" size="icon">
-          <ChevronDown />
-          Genre
-        </Button> */}
-        <div>
-          <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="">
-                  Genre
-                </NavigationMenuTrigger>
-                <NavigationMenuContent className="w-[500px] items-center">
-                  <h1 className="w-[500px] text-xl ">Genre</h1>
-                  <h2 className=" text-l ">See lists of movies by genres</h2>
+    <header className="flex flex-row w-full max-w-screen-xl mx-auto h-[60px] justify-between items-center border-none border-gray-200 dark:border-gray-700 px-4">
+    
+      <Link href="/">
+        <Image
+          src="/Logo.png"
+          alt="Movie App Logo"
+          width={92}
+          height={20}
+          className="object-contain"
+        />
+      </Link>
 
-                  <NavigationMenuLink className="flex flex-row flex-wrap gap-3">
-                    {genreFilter.map((el, index) => {
-                      return (
+   
+      <div className="flex items-center space-x-4">
+      
+        <NavigationMenu>
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Genre</NavigationMenuTrigger>
+              <NavigationMenuContent className="p-4 items-center w-[500px]">
+                <h1 className="w-[500px] text-xl font-semibold">Genre</h1>
+                <h2 className="text-sm text-muted-foreground mb-4">
+                  See lists of movies by genres
+                </h2>
+                <div className="flex flex-row flex-wrap gap-2">
+                  {genreFilter.map((genre, index) => (
+                    <Link
+                      key={index}
+                      href={`/genres/${genre.toLowerCase()}`}
+                
+                    >
+                      <NavigationMenuLink>
                         <Badge
-                          key={index}
-                          className="bg-transparent border border-gray-300 text-black p-[6px]"
+                          className="bg-transparent border border-gray-300 dark:border-gray-600 text-foreground hover:bg-gray-100 dark:hover:bg-gray-800 p-[6px] cursor-pointer"
                         >
-                          {el}
-                          <ChevronRight />
+                          {genre}
+                          <ChevronRight className="w-4 h-4 ml-1" />
                         </Badge>
-                      );
-                    })}
-                  </NavigationMenuLink>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
-        </div>
+                      </NavigationMenuLink>
+                    </Link>
+                  ))}
+                </div>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
 
-        <div className="flex w-[380px] h-[36px] items-center border bg-gray-300 rounded-[8px]">
-          {" "}
-          <Search />
+        <div className="flex w-[min(380px,80vw)] h-[36px] items-center border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 rounded-lg px-2">
+          <Search className="w-5 h-5 text-gray-500" />
           <Input
             type="text"
-            className="outline-none border-none w-full h-full"
-            placeholder="search"
+            value={searchQuery}
+            onChange={handleSearch}
+            className="border-none bg-transparent focus:ring-0 w-full h-full"
+            placeholder="Search movies..."
           />
         </div>
       </div>
-      <Button className="">
-        <Moon />
+
+    
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={toggleTheme}
+        aria-label={`Switch to ${isDarkTheme ? "light" : "dark"} mode`}
+      >
+        {isDarkTheme ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
       </Button>
-    </div>
+    </header>
   );
 };
