@@ -78,7 +78,7 @@ export const NowPlay = () => {
                     width={400}
                     height={600}
                     className="object-cover w-full h-full"
-                    priority={index === 0} // Optimize the first image
+                    priority={index === 0} 
                   />
                   {/* Optional: Overlay for placeholder text */}
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
