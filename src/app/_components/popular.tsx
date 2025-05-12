@@ -29,8 +29,12 @@ const Popular = () => {
         </Badge> */}
       </div>
       <div className="flex flex- col flex-wrap gap-4 justify-center">
-        {upcoming.map((el, name, index) => {
-          return <div className="flex flex-col">{el}</div>;
+        {upcoming.map((el, index) => {
+          return (
+            <div key={index} className="flex flex-col">
+              {el}
+            </div>
+          );
         })}
       </div>
     </div>

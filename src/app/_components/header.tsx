@@ -1,5 +1,3 @@
-
-
 "use client";
 import {
   NavigationMenu,
@@ -28,7 +26,7 @@ export const Header = () => {
     "Biography",
     "Crime",
     "Documentary",
-    "Mystery", 
+    "Mystery",
     "Drama",
     "History",
     "Thriller",
@@ -36,26 +34,26 @@ export const Header = () => {
 
   const { setTheme, resolvedTheme } = useTheme();
   const isDarkTheme = resolvedTheme === "dark";
-  console.log(resolvedTheme,"d");
-  
+  console.log(resolvedTheme, "d");
+
   const toggleTheme = () => setTheme(isDarkTheme ? "light" : "dark");
 
   const [searchQuery, setSearchQuery] = useState<string>("");
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
- console.log(setSearchQuery,"ss");
- 
+    console.log(setSearchQuery, "ss");
   };
 
-  useEffect(() =>{
-    window.localStorage.setItem('name', "bbb")
-  },[])
+  // useEffect(() => {
+  //   window.localStorage.setItem("name", "bbb");
+  // }, []);
 
   return (
-    <header className="flex flex-row w-full max-w-screen-xl mx-auto h-[60px] justify-between items-center border-none border-gray-200 dark:border-gray-700 px-4">
-    
-      <Link href="/">
+    <header className="flex flex-row max-w-screen-xl mx-auto h-[60px] justify-between items-center border-none border-gray-200 dark:border-gray-700 px-4">
+      <Link href="">
         <Image
+          defaultValue={searchQuery}
+          // onClick={handleSearch}
           src="/Logo.png"
           alt="Movie App Logo"
           width={92}
@@ -64,9 +62,7 @@ export const Header = () => {
         />
       </Link>
 
-   
       <div className="flex items-center space-x-4">
-      
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
@@ -78,15 +74,9 @@ export const Header = () => {
                 </h2>
                 <div className="flex flex-row flex-wrap gap-2">
                   {genreFilter.map((genre, index) => (
-                    <Link
-                      key={index}
-                      href={`/genres/${genre.toLowerCase()}`}
-                
-                    >
+                    <Link key={index} href={`/genres/${genre.toLowerCase()}`}>
                       <NavigationMenuLink>
-                        <Badge
-                          className="bg-transparent border border-gray-300 dark:border-gray-600 text-foreground hover:bg-gray-100 dark:hover:bg-gray-800 p-[6px] cursor-pointer"
-                        >
+                        <Badge className="bg-transparent border border-gray-300 dark:border-gray-600 text-foreground hover:bg-gray-100 dark:hover:bg-gray-800 p-[6px] cursor-pointer">
                           {genre}
                           <ChevronRight className="w-4 h-4 ml-1" />
                         </Badge>
@@ -111,14 +101,17 @@ export const Header = () => {
         </div>
       </div>
 
-    
       <Button
         variant="ghost"
         size="icon"
         onClick={toggleTheme}
         aria-label={`Switch to ${isDarkTheme ? "light" : "dark"} mode`}
       >
-        {isDarkTheme ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        {isDarkTheme ? (
+          <Sun className="w-5 h-5" />
+        ) : (
+          <Moon className="w-5 h-5" />
+        )}
       </Button>
     </header>
   );
