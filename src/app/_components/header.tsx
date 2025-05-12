@@ -39,36 +39,45 @@ export const Header = () => {
   const toggleTheme = () => setTheme(isDarkTheme ? "light" : "dark");
 
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
     console.log(setSearchQuery, "ss");
   };
-
+  const toggleSearch =()=>{
+    setIsSearchOpen(!isSearchOpen)
+    console.log("search toggle", !isSearchOpen);
+    
+  }
   // useEffect(() => {
   //   window.localStorage.setItem("name", "bbb");
   // }, []);
 
   return (
-    <header className="flex flex-row max-w-screen-xl mx-auto h-[60px] justify-between items-center border-none border-gray-200 dark:border-gray-700 px-4">
-      <Link href="">
+    <header className="relative flex flex-row max-w-screen-xl w-full mx-auto h-[56px] sm:h-[60px] justify-between items-center px-3 sm:px-4 mx-auto h-[60px] justify-between items-center border-none border-gray-200 dark:border-gray-700 px-4">
+     <div className={`${isSearchOpen ? "hidden sm:flex" : "flex"}`}>
+     <Link href="">
         <Image
           defaultValue={searchQuery}
           // onClick={handleSearch}
           src="/Logo.png"
           alt="Movie App Logo"
-          width={92}
-          height={20}
-          className="object-contain"
+          width={80}
+          height={18}
+          className="sm:w-[92px] sm:h-[20px] object-contain"
         />
       </Link>
+     </div>
+ 
 
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-2 sm:space-x-4">
+        <div className={`${isSearchOpen} ? "absolute left-3 sm:static sm: flex":"flex"`}>
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
-              <NavigationMenuTrigger>Genre</NavigationMenuTrigger>
-              <NavigationMenuContent className="p-4 items-center w-[500px]">
-                <h1 className="w-[500px] text-xl font-semibold">Genre</h1>
+              <NavigationMenuTrigger className="text-sm sm:text-base">Genre</NavigationMenuTrigger>
+              <NavigationMenuContent className="p-3 sm:p-4 w-[90vw] max-w-[400px] sm:max-w-[500px]">
+                <h1 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">Genre</h1>
                 <h2 className="text-sm text-muted-foreground mb-4">
                   See lists of movies by genres
                 </h2>
@@ -76,9 +85,9 @@ export const Header = () => {
                   {genreFilter.map((genre, index) => (
                     <Link key={index} href={`/genres/${genre.toLowerCase()}`}>
                       <NavigationMenuLink>
-                        <Badge className="bg-transparent border border-gray-300 dark:border-gray-600 text-foreground hover:bg-gray-100 dark:hover:bg-gray-800 p-[6px] cursor-pointer">
+                        <Badge className="bg-transparent border border-gray-300 dark:border-gray-600 text-foreground hover:bg-gray-800 dark:hover:bg-gray-800 px-2 py-1 text-xs sm:text-sm cursor-pointer">
                           {genre}
-                          <ChevronRight className="w-4 h-4 ml-1" />
+                          <ChevronRight className="w-3 h-3 ml-1 sm:w-4 sm:h-4 ml-1" />
                         </Badge>
                       </NavigationMenuLink>
                     </Link>
@@ -88,24 +97,57 @@ export const Header = () => {
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
-
-        <div className="flex w-[min(380px,80vw)] h-[36px] items-center border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 rounded-lg px-2">
-          <Search className="w-5 h-5 text-gray-500" />
-          <Input
-            type="text"
-            value={searchQuery}
-            onChange={handleSearch}
-            className="border-none bg-transparent focus:ring-0 w-full h-full"
-            placeholder="Search movies..."
-          />
         </div>
-      </div>
+       
+        </div>
+      
+      <div className="flex items-center border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 rounded-lg px-2 sm:px-3 h-[32px] sm:h-[36px]">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="w-8 h-8 sm:w-6 sm:h-6 p-0"
+            onClick={toggleSearch}
+            aria-label="Toggle search"
+          >
+            <Search className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
+          </Button>
+
+          <div className="hidden sm:flex items-center w-[min(200px,60vw)] sm:w-[min(300px,70vw)] md:w-[380px]">
+            <Input
+              id="search"
+              type="text"
+              value={searchQuery}
+              onChange={handleSearch}
+              className="border-none bg-transparent focus:ring-0 text-xs sm:text-sm w-full h-full"
+              placeholder="Search movies..."
+              aria-label="Search movies"
+            />
+          </div>
+        </div>
+    
+      {isSearchOpen && (
+        <div className="absolute top-[56px] left-0 w-full bg-white dark:bg-gray-900 p-3 sm:hidden z-1">
+          <div className=" flex w-full h-[32px] items-center border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 rounded-lg px-2">
+            <Search className="w-4 h-4 text-gray-500" />
+            <Input
+              id="mobile-search"
+              type="text"
+              value={searchQuery}
+              onChange={handleSearch}
+              className="border-none bg-transparent focus:ring-0 text-xs w-full h-full"
+              placeholder="Search movies..."
+              aria-label="Search movies"
+            />
+          </div>
+        </div>
+      )}
 
       <Button
         variant="ghost"
         size="icon"
+        className="w-8 h-8 sm:w-10 sm:h-10"
         onClick={toggleTheme}
-        aria-label={`Switch to ${isDarkTheme ? "light" : "dark"} mode`}
+        aria-label={`Switch to ${isDarkTheme ? "light" : "dark"} mode`}    
       >
         {isDarkTheme ? (
           <Sun className="w-5 h-5" />

@@ -15,9 +15,9 @@ export default function Home() {
       {/* <Header /> */}
       <NowPlay />
       <Upcoming />
-      {/* <Popular />
-      <TopRated />
-      <Bottom /> */}
+      <Popular />
+      {/* <TopRated />
+      <Bottom />  */}
     </div>
     // <div className="border flex justify-center">
     //   <div className="w-screen-xl">home</div>

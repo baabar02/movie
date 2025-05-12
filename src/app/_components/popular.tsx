@@ -1,3 +1,4 @@
+
 import { Badge } from "@/components/ui/badge";
 import { Movies } from "./movies";
 import { ChevronDown, ChevronRight } from "lucide-react";
@@ -18,23 +19,21 @@ const Popular = () => {
   ];
 
   return (
-    <div className=" h-[980px] w-full max-w-screen-xl border border-green-400 flex flex-col flex-wrap gap-[10px]">
-      <div className="flex justify-center space-x-240 items-center">
-        <h1 className="text-3xl">Popular</h1>
-        <p className="h-[20px] cursor-pointer flex">
-          See more <ChevronRight />
+    <div className="w-full max-w-screen-xl px-4 sm:px-6 lg:px-8 py-6 border border-green-400  gap-[10px] px-5">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">Popular</h1>
+        <p className="flex items-center gap-1 text-sm sm:text-base text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 cursor-pointer flex">
+          See more <ChevronRight className="w-4 h-4"/>
         </p>
-        {/* <Badge className="h-[20px]">
-          See coming 
-        </Badge> */}
       </div>
-      <div className="flex flex- col flex-wrap gap-4 justify-center">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 justify-items-center">
         {upcoming.map((el, index) => {
           return (
-            <div key={index} className="flex flex-col">
+            <div key={index} className="">
               {el}
             </div>
           );
+
         })}
       </div>
     </div>
