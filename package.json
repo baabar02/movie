@@ -22,7 +22,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "tailwind-merge": "^3.2.0",
-    "theme": "^0.1.0",
+    "theme": "^0.0.8",
     "usehooks-ts": "^3.1.1"
   },
   "devDependencies": {
