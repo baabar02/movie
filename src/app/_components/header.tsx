@@ -41,7 +41,8 @@ export const Header = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const clearHandle = () => {
-    setIsSearchOpen(!isSearchOpen ? isSearchOpen : false);
+    // setIsSearchOpen(!isSearchOpen ? isSearchOpen : false);
+    setIsSearchOpen((prev) => !prev);
   };
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -56,7 +57,7 @@ export const Header = () => {
   // }, []);
 
   return (
-    <header className="relative flex flex-row max-w-screen-xl w-full mx-auto h-[56px] sm:h-[60px] justify-between items-center px-3 sm:px-4 mx-auto h-[60px] justify-between items-between border-none border-gray-200 dark:border-gray-700 px-4">
+    <header className="flex flex-row max-w-screen-xl sticky top-0 z-10 bg-background w-full mx-auto h-[56px] sm:h-[60px] justify-between items-center px-3 sm:px-4 mx-auto h-[60px] justify-between items-between border-none border-gray-200 dark:border-gray-700 px-4">
       <div className={`${isSearchOpen ? "hidden sm:flex" : "flex"}`}>
         <Link href="">
           <Image
@@ -148,9 +149,9 @@ export const Header = () => {
               placeholder="Search movies..."
               aria-label="Search movies"
             />
-            <p onClick={clearHandle} className="">
+            <Button onClick={clearHandle} size="icon" variant="ghost">
               x
-            </p>
+            </Button>
           </div>
         </div>
       )}

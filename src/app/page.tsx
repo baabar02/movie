@@ -8,6 +8,7 @@ import Upcoming from "./_components/upcoming";
 import Popular from "./_components/popular";
 import TopRated from "./_components/toprated";
 import Bottom from "./_components/bottom";
+// import { MobileHero } from "./_components/mobileHero";
 
 export default function Home() {
   return (
