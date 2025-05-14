@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Play } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getHeroApi } from "../hooks/get-hero-api";
-import { MobileHero } from "./MobileHero";
+import { MobileHero } from "./mobileHero";
 
 const TMDB_IMAGE_SERVICE_URL = "https://image.tmdb.org/t/p/original";
 
@@ -28,9 +28,8 @@ type PosterMovies = {
 
 export const NowPlay = () => {
   const [posters, setPoster] = useState<PosterMovies[]>([]);
-  // console.log(posters);
-
   const [playQuery, setPlayQuery] = useState<string>();
+  const [isLoading,setIsLoading] =useState(true);
 
   const playHandle = (param: string) => {
     setPlayQuery(param);
@@ -45,6 +44,14 @@ export const NowPlay = () => {
     };
     nowPlaying();
   }, []);
+
+  if (!isLoading) {
+    return (
+    <div className="flex justify-center items-center w-full max-w-screen-xl mx-auto h-[600px]">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900 dark:border-white"></div>
+    </div>
+    )
+  };
 
   return (
     <div className="relative w-full max-w-screen-xl mx-auto h-[600px] border-none border-gray-200 dark:border-gray-700">
@@ -77,7 +84,7 @@ export const NowPlay = () => {
                           </p>
                         </div>
 
-                        <div className="text-wrap text-white  w-[300px]">
+                        <div className="text-wrap text-white  w-[320px]">
                           {el.overview}
                         </div>
                         <button onClick={() => playHandle(`${""}`)}>

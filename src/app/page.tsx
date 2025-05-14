@@ -7,8 +7,8 @@ import { NowPlay } from "./_components/nowplaying";
 import Upcoming from "./_components/upcoming";
 import Popular from "./_components/popular";
 import TopRated from "./_components/toprated";
-import Bottom from "./_components/bottom";
-// import { MobileHero } from "./_components/mobileHero";
+import Footer from "./_components/footer";
+
 
 export default function Home() {
   return (
@@ -17,11 +17,9 @@ export default function Home() {
       <NowPlay />
       <Upcoming />
       <Popular />
-      {/* <TopRated />
-      <Bottom />  */}
+      <TopRated />
+      <Footer /> 
     </div>
-    // <div className="border flex justify-center">
-    //   <div className="w-screen-xl">home</div>
-    // </div>
+
   );
 }

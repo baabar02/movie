@@ -34,7 +34,6 @@ export const Header = () => {
 
   const { setTheme, resolvedTheme } = useTheme();
   const isDarkTheme = resolvedTheme === "dark";
-  console.log(resolvedTheme, "d");
 
   const toggleTheme = () => setTheme(isDarkTheme ? "light" : "dark");
 

@@ -51,7 +51,7 @@ export const MobileHero = ({ posters }: PostersProps) => {
                     </div>
 
                     <div className=" h-[264px] left-4 right-0  p-4">
-                      <p className="dark:text-white text-lg">Now playingasd:</p>
+                      <p className="dark:text-white text-lg">Now playing:</p>
                       <div className="flex justify-between">
                         <h1 className="dark:text-white text-2xl font-semibold ">
                           {el.title}
@@ -79,8 +79,8 @@ export const MobileHero = ({ posters }: PostersProps) => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="hidden sm:flex absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-800 text-white hover:bg-gray-700" />
-        <CarouselNext className="hidden sm:flex absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-800 text-white hover:bg-gray-700" />
+        <CarouselPrevious className="hidden sm: absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-800 text-white hover:bg-gray-700 " />
+        <CarouselNext className="hidden sm:flex absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-800 text-white hover:bg-gray-700 " />
       </Carousel>
     </div>
   );
