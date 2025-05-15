@@ -1,6 +1,9 @@
-// import { getMovieId } from "@/app/hooks/get-id-api";
+import { getMovieId } from "@/app/hooks/get-id-api";
 
-import MovieId from "@/app/_components/movieID";
+import Detail from "@/app/_components/detailsPage";
+import Upcoming from "@/app/_components/upcoming";
+import UpcomingPage from "./up";
+
 
 interface PageProps {
   params: {
@@ -8,15 +11,17 @@ interface PageProps {
   };
 }
 
-const DetailsPage = async ({ params }: PageProps) => {
 
-  const { id } = params;
-  const result = await getMovieId(id);
-  console.log(result, "s");
+const DetailsPage = async ({params}:PageProps) => {
+const {id} = params;
 
-  return 
+
+  return (
     
-    <MovieId id={id}>
-    
+  <UpcomingPage id={id}/>
+
+
+
+  )
 };
 export default DetailsPage;

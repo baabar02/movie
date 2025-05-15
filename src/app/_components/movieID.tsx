@@ -17,8 +17,8 @@ interface PageProps {
         
       id: string;
     };
-
-const MovieId = ({id}, id:PageProps) => {
+  }
+const MovieId = ({}, id:PageProps) => {
   const [toprated, setTopRated] = useState<popularMovies[]>([]);
 
   useEffect(() => {

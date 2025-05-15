@@ -7,10 +7,15 @@ type UpcomingMovies = {
   vote:  string | number;
 };
 
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
 
 const TMDB_IMAGE_SERVICE_URL = "https://image.tmdb.org/t/p/original/";
 
-export const Movies = ({ title, image, vote }: UpcomingMovies) => {
+export const Movies = ({ title, image, vote, }: UpcomingMovies) => {
   return (
     <div className="flex flex-col w-[158px] sm:w-[180px] md:w-[200px] h-[280px] lg:h-[340px] bg-gray-200 dark:bg-gray-800  rounded-[8px]">
       <div className="w-full h-[234px] sm:h-[234px] lg:h-[260px] rounded-t-[8px] bg-gray-300">

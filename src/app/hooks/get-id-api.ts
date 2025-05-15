@@ -1,5 +1,10 @@
 import axios from "axios";
 
+interface MovieVideoResponse
+{
+  id:string
+}
+
 export const getMovieId = async (id: string) => {
   try {
     const config = {
@@ -11,7 +16,7 @@ export const getMovieId = async (id: string) => {
     };
 
     const result = await axios.get(
-      `https://api.themoviedb.org/3/movie/21886457/videos?language=en-US`,
+      `https://api.themoviedb.org/3/movie/${id}/videos?language=en-US`,
       config
     );
     return result?.data;
@@ -19,3 +24,5 @@ export const getMovieId = async (id: string) => {
     console.log(error);
   }
 };
+
+

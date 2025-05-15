@@ -12,20 +12,28 @@ import {
 
 import { Badge } from "@/components/ui/badge";
 import { Movies } from "./movies";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight, } from "lucide-react";
 import { useEffect, useState } from "react";
-
+import Link from "next/link";
 import { getUpcomingApi } from "../hooks/get-upcoming-api";
 
 const TMDB_IMAGE_SERVICE_URL = "https://image.tmdb.org/t/p";
 
 type UpcomingMovies = {
+  id:string
   poster_path: string;
   original_title: string;
   vote_average: number | string;
   backdrop_path: string;
 };
+
+interface PageProps {
+  params: {
+    id?: string;
+  };
+}
 const Upcoming = () => {
+
   const [upComing, setUpcoming] = useState<UpcomingMovies[]>([]);
 
   useEffect(() => {
@@ -50,34 +58,28 @@ const Upcoming = () => {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 justify-items-center">
         {upComing.map((el, index) => {
           return (
-            <div key={index} className="">
+            <Link 
+               key={index}
+               href={`/details/${el.id}`} >
+               <div className="">
               <Movies
                 title={el.original_title}
                 image={el.backdrop_path}
                 vote={el.vote_average}
               />
             </div>
+            </Link>
+         
           );
         })}
       </div>
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious href="#" />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink href="#">1</PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationEllipsis />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext href="#" />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+
     </div>
   );
 };
 
 export default Upcoming;
+
+
+
+
