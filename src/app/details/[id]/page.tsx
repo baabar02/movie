@@ -1,8 +1,8 @@
 import { getMovieId } from "@/app/hooks/get-id-api";
 
-import Detail from "@/app/_components/detailsPage";
+
 import Upcoming from "@/app/_components/upcoming";
-import UpcomingPage from "./up";
+import UpcomingPage from "./upID";
 
 
 interface PageProps {
@@ -19,6 +19,7 @@ const {id} = params;
   return (
     
   <UpcomingPage id={id}/>
+
 
 
 
