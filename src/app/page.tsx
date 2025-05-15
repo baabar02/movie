@@ -9,6 +9,10 @@ import Popular from "./_components/popular";
 import TopRated from "./_components/toprated";
 import Footer from "./_components/footer";
 
+const arr = [
+  { name: "Sinners", id: "213" },
+  { name: "Karate kid", id: "33" },
+];
 
 export default function Home() {
   return (
@@ -18,8 +22,14 @@ export default function Home() {
       <Upcoming />
       <Popular />
       <TopRated />
-      <Footer /> 
+      <Footer />
+      {arr.map((el) => {
+        return (
+          <div>
+            {el.name} {el.id}
+          </div>
+        );
+      })}
     </div>
-
   );
 }
