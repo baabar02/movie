@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import { getHeroApi } from "../hooks/get-hero-api";
 import { MobileHero } from "./mobileHero";
 
-const TMDB_IMAGE_SERVICE_URL = "https://image.tmdb.org/t/p/original";
+export const TMDB_IMAGE_SERVICE_URL = "https://image.tmdb.org/t/p/original";
 
 type PosterMovies = {
   adult: boolean;
@@ -58,7 +58,6 @@ export const NowPlay = () => {
       <Carousel className="hidden md:block h-full border-none">
         <CarouselContent className="border-none">
           {posters.map((el, index) => {
-            console.log(el);
             return (
               <CarouselItem key={index}>
                 <Card className="h-[600px] border-none rounded-none overflow-hidden">

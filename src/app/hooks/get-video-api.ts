@@ -1,7 +1,6 @@
-import { Movie } from "@/types";
 import axios from "axios";
 
-export const getTopRated = async () => {
+export const getVideoApi = async () => {
   const config = {
     headers: {
       "Content-type": "application/json",
@@ -10,12 +9,9 @@ export const getTopRated = async () => {
     },
   };
 
-  const response = await axios.get<{
-    results: Movie[];
-  }>(
-    "https://api.themoviedb.org/3//movie/top_rated?language=en-US&page=1",
+  const result = await axios.get(
+    "https://api.themoviedb.org/movie/${id}/videos?language=en-US",
     config
   );
-
-  return response?.data.results;
+  return result?.data;
 };

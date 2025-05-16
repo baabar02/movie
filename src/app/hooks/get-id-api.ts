@@ -1,9 +1,5 @@
+import { MovieDetails } from "@/types";
 import axios from "axios";
-
-interface MovieVideoResponse
-{
-  id:string
-}
 
 export const getMovieId = async (id: string) => {
   try {
@@ -15,14 +11,13 @@ export const getMovieId = async (id: string) => {
       },
     };
 
-    const result = await axios.get(
-      `https://api.themoviedb.org/3/movie/${id}/videos?language=en-US`,
+    const result = await axios.get<MovieDetails>(
+      `https://api.themoviedb.org/3/movie/${id}?language=en-US`,
       config
     );
+
     return result?.data;
   } catch (error) {
     console.log(error);
   }
 };
-
-

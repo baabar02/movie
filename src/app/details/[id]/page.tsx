@@ -1,28 +1,18 @@
-import { getMovieId } from "@/app/hooks/get-id-api";
+import { MovieDetail } from "@/app/_components/detail/MovieDetail";
 
-
-import Upcoming from "@/app/_components/upcoming";
-import UpcomingPage from "./upID";
-
-
-interface PageProps {
+type PageProps = {
   params: {
     id: string;
   };
-}
+};
 
-
-const DetailsPage = async ({params}:PageProps) => {
-const {id} = params;
-
+const DetailsPage = ({ params }: PageProps) => {
+  const { id } = params;
 
   return (
-    
-  <UpcomingPage id={id}/>
-
-
-
-
-  )
+    <div>
+      <MovieDetail movieId={id} />
+    </div>
+  );
 };
 export default DetailsPage;

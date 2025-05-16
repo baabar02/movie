@@ -17,8 +17,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-
-
 export const Header = () => {
   const genreFilter: string[] = [
     "Action",
@@ -54,36 +52,33 @@ export const Header = () => {
     setIsSearchOpen(!isSearchOpen);
     console.log("search toggle", !isSearchOpen);
   };
-  const router = useRouter()
-  const routerHandle = (path:string)=>{
-    router.push(path)
-  }
-
+  const router = useRouter();
+  const routerHandle = (path: string) => {
+    router.push(path);
+  };
 
   const handleLogoClick = () => {
     router.push("/upcoming");
   };
 
-
-
   return (
     <header className="flex flex-row max-w-screen-xl sticky top-0 z-10 bg-background w-full mx-auto h-[56px] sm:h-[60px] justify-between items-center px-3 sm:px-4 mx-auto h-[60px] justify-between items-between border-none border-gray-200 dark:border-gray-700 px-4">
       <div className={`${isSearchOpen ? "hidden sm:flex" : "flex"}`}>
-        <Link 
+        <Link
           // onClick={()=>handleLogoClick()}
-          href={`/details/upcoming`}>
-          <div >
-        <Image
-            defaultValue={searchQuery}
-            onClick={()=>routerHandle(`/details/upcoming`)}
-            src="/Logo.png"
-            alt="Movie App Logo"
-            width={80}
-            height={18}
-            className="sm:w-[92px] sm:h-[20px] object-contain"
-          />
+          href={`/details/upcoming`}
+        >
+          <div>
+            <Image
+              defaultValue={searchQuery}
+              onClick={() => routerHandle(`/details/upcoming`)}
+              src="/Logo.png"
+              alt="Movie App Logo"
+              width={80}
+              height={18}
+              className="sm:w-[92px] sm:h-[20px] object-contain"
+            />
           </div>
-      
         </Link>
       </div>
 
