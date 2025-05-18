@@ -15,7 +15,7 @@ const adds = [
  const logoSrc = isDarkTheme ? "/Logo.png" : "/Logo-1.png"
 
   return (
-    <div className="flex justify-center  w-full max-w-screen-xl h-[308px]  sm:h-[280px] dark:bg-white bg-[#4338CA] ">
+    <div className="flex justify-center w-full max-w-screen-xl h-[308px]  sm:h-[280px] dark:bg-white bg-[#4338CA] ">
       <div className="flex-row sm:flex px-6 sm:flex-row sm:justify-center gap-40 mt-8 w-full h-[200px]">
       <div className="flex flex-col  items-start sm:items-start">
     

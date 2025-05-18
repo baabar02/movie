@@ -1,6 +1,7 @@
+
 import axios from "axios";
 
-export const getHeroApi = async () => {
+export const getSimilarApi = async () => {
   const config = {
     headers: {
       "Content-type": "application/json",
@@ -10,12 +11,9 @@ export const getHeroApi = async () => {
   };
 
   const result = await axios.get(
-    "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1",
+    "https://api.themoviedb.org/3/movie/${movie_Id}/similar?language=en-US&page=1",
+    
     config
-    
-    
   );
-  console.log(result.data);
-  
-  return result?.data;
+  return result?.data.genres;
 };

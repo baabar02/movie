@@ -1,3 +1,6 @@
+import { MovieDetail } from "@/app/_components/detail/MovieDetail";
+
+
 export type Movie = {
   adult: boolean;
   backdrop_path: string;
@@ -13,6 +16,9 @@ export type Movie = {
   video: boolean;
   vote_average: number;
   vote_count: number;
+  credit: string
+  cast:string
+  crew:string
 };
 
 export interface MovieDetails {
@@ -42,7 +48,13 @@ export interface MovieDetails {
   video: boolean;
   vote_average: number;
   vote_count: number;
+  cast:string;
+  crew:string
+
 }
+
+
+
 
 export interface Genre {
   id: number;
@@ -71,4 +83,15 @@ export interface SpokenLanguage {
   english_name: string;
   iso_639_1: string;
   name: string;
+}
+
+export interface CrewResponse {
+  id: number;
+  cast: { id: number; name: string; character: string };
+  crew: { id: number; name: string; job: string };
+}
+
+interface VideoResponse {
+  id: number;
+  results: { id: string; key: string; name: string; type: string };
 }

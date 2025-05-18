@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const getVideoApi = async () => {
+export const getVideoApi = async (id: string) => {
   const config = {
     headers: {
       "Content-type": "application/json",
@@ -10,8 +10,9 @@ export const getVideoApi = async () => {
   };
 
   const result = await axios.get(
-    "https://api.themoviedb.org/movie/${id}/videos?language=en-US",
+    `https://api.themoviedb.org/3/movie/${id}/videos?language=en-US`,
     config
   );
+
   return result?.data;
 };

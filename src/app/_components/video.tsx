@@ -1,76 +1,51 @@
+
+
 import { useEffect, useState } from "react";
 import { getVideoApi } from "../hooks/get-video-api";
-import { useRouter } from "next/router";
+import { PlayCircle } from "lucide-react";
 
-type MovieVideoResponse = {
-  title: string;
-  image: string;
-  vote: string | number;
-  id: string;
+type VideoProps = {
+  movieId: string;
 };
 
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
-
-export const Video = () => {
-  const [videos, setVideos] = useState<MovieVideoResponse[]>([]);
+export const Video = ({ movieId }: VideoProps) => {
+  const [trailerKey, setTrailerKey] = useState<string | null>(null);
+  const [showPlayer, setShowPlayer] = useState(false);
 
   useEffect(() => {
-    const videoPlay = async () => {
-      const response = await getVideoApi();
-      const firstTen = response?.results.splice(0);
-      setVideos(firstTen);
+    const fetchVideo = async () => {
+      const response = await getVideoApi(movieId);
+      const trailer = response?.results?.find(
+        (vid: any) => vid.type === "Trailer" && vid.site === "YouTube"
+      );
+      if (trailer) setTrailerKey(trailer.key);
     };
-    videoPlay();
-  }, []);
+    fetchVideo();
+  }, [movieId]);
 
-  const router = useRouter();
-  const routerHandle = (path: string) => {
-    router.push(path);
-  };
+  if (!trailerKey) return null;
 
   return (
-    <div>
-      Video
-      {/* {videos.map((el,index)=>{
-                <Video/>
-            })} */}
+    <div className="absolute mt-80 left-[-20px] w-full flex flex-col items-center">
+      {!showPlayer ? (
+        <button
+          onClick={() => setShowPlayer(true)}
+          className="flex items-center gap-2 text-white bg-transparent hover:bg-red-600 px-4 py-2 rounded-full transition"
+        >
+          <PlayCircle className=" w-5 h-5" />
+          Watch Trailer
+        </button>
+      ) : (
+        <div className=" w-full rounded-lg overflow-hidden shadow-md">
+          <iframe
+            className="w-full h-full"
+            src={`https://www.youtube.com/embed/${trailerKey}`}
+            title="Trailer"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      )}
     </div>
   );
 };
-
-// ("use client");
-
-// import { getMovieId } from "@/app/hooks/get-id-api";
-// import { MovieDetails } from "@/types";
-
-// type MovieDetailProps = {
-//   movieId: string;
-// };
-
-// export const MovieDetail = ({ movieId }: MovieDetailProps) => {
-//   const [movie, setMovie] = useState<MovieDetails>();
-
-//   useEffect(() => {
-//     const getMovie = async () => {
-//       const response = await getMovieId(movieId);
-//       setMovie(response);
-//     };
-
-//     getMovie();
-//   }, []);
-
-//   return (
-//     <div>
-//       <h1>{movie?.overview}</h1>
-//       <img
-//         width="100%"
-//         height={200}
-//         // src={TMDB_IMAGE_SERVICE_URL + movie?.poster_path}
-//       />
-//     </div>
-//   );
-// };

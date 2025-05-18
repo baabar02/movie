@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const getHeroApi = async () => {
+export const getSearch = async () => {
   const config = {
     headers: {
       "Content-type": "application/json",
@@ -10,12 +10,10 @@ export const getHeroApi = async () => {
   };
 
   const result = await axios.get(
-    "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1",
+    "https://api.themoviedb.org/3/search/movie?query=${searchValue}&language=en-US&page=${page}",
     config
-    
-    
   );
-  console.log(result.data);
+  console.log(result,'search');
   
-  return result?.data;
+  return result?.data.search;
 };

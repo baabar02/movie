@@ -15,6 +15,7 @@ export const getMovieId = async (id: string) => {
       `https://api.themoviedb.org/3/movie/${id}?language=en-US`,
       config
     );
+    //  /movie/${movieId}?language=en-US
 
     return result?.data;
   } catch (error) {
