@@ -117,6 +117,7 @@ export const MovieDetail = ({ movieId }: MovieDetailProps) => {
         </div>
       )}
       <h1>{movie.overview}</h1>
+      <h2>{movie.revenue}</h2>
       <SimilarMovies movieId={movieId} />
     
     </div>

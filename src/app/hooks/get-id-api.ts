@@ -19,6 +19,6 @@ export const getMovieId = async (id: string) => {
 
     return result?.data;
   } catch (error) {
-    console.log(error);
+  
   }
 };

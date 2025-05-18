@@ -48,8 +48,8 @@ export interface MovieDetails {
   video: boolean;
   vote_average: number;
   vote_count: number;
-  cast:string;
-  crew:string
+  cast:string[];
+  crew:string[];
 
 }
 

@@ -66,12 +66,12 @@ export const Header = () => {
       <div className={`${isSearchOpen ? "hidden sm:flex" : "flex"}`}>
         <Link
           // onClick={()=>handleLogoClick()}
-          href={`/details/upcoming`}
+          href={`/details/page`}
         >
           <div>
             <Image
               defaultValue={searchQuery}
-              onClick={() => routerHandle(`/details/upcoming`)}
+              onClick={() => routerHandle(`/details/page`)}
               src="/Logo.png"
               alt="Movie App Logo"
               width={80}

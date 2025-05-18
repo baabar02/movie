@@ -18,6 +18,7 @@ export const getCrewApi = async () => {
   );
  
 
+  console.log(result,"crew");
   
   return result?.data.credits;
 };
