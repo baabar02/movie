@@ -1,4 +1,3 @@
-
 "use client";
 
 import { getMovieId } from "@/app/hooks/get-id-api";
@@ -9,6 +8,8 @@ import { Video } from "../video";
 import Image from "next/image";
 import SimilarMovies from "../SimilarMovies";
 import Footer from "../footer";
+import { getCrewApi } from "@/app/hooks/get-crew-api";
+import { Credits } from "../credits";
 
 type MovieDetailProps = {
   movieId: string;
@@ -24,6 +25,8 @@ const formatRuntime = (minutes: number | null) => {
   return `${hours}h ${remainingMinutes}min`;
 };
 
+let a = null;
+
 export const MovieDetail = ({ movieId }: MovieDetailProps) => {
   const [movie, setMovie] = useState<MovieDetails | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -33,11 +36,12 @@ export const MovieDetail = ({ movieId }: MovieDetailProps) => {
       setIsLoading(true);
       try {
         const response = await getMovieId(movieId);
+        if (!response) return;
         setMovie(response);
         console.log("Movie Data:", response);
       } catch (error) {
         console.error("Error fetching movie:", error);
-        setMovie(null); 
+        setMovie(null);
       } finally {
         setIsLoading(false);
       }
@@ -57,71 +61,74 @@ export const MovieDetail = ({ movieId }: MovieDetailProps) => {
 
   return (
     <div className="flex flex-col gap-5 max-w-screen-xl mx-auto  justify-between">
-    <div className="flex flex-col gap-5 max-w-screen-xl mx-auto px-25 justify-between">
-      <div className="flex mt-10 justify-between">
-        <p className="text-2xl font-bold">{movie.title}</p>
-        <p>Rating</p>
-      </div>
-      <div className="flex justify-between">
-        <div>
-          {formattedDate} • {movie.origin_country?.join(", ") || "N/A"} •{" "}
-          {formatRuntime(movie.runtime)}
+      <div className="flex flex-col gap-5 max-w-screen-xl mx-auto px-25 justify-between">
+        <div className="flex mt-10 justify-between">
+          <p className="text-2xl font-bold">{movie.title}</p>
+          <p>Rating</p>
         </div>
-        <div className="flex-col">
-          <div className="flex gap-2">
-            <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
-            {movie.vote_average.toFixed(1)}
-            {"/10"}
+        <div className="flex justify-between">
+          <div>
+            {formattedDate} • {movie.origin_country?.join(", ") || "N/A"} •{" "}
+            {formatRuntime(movie.runtime)}
           </div>
-          <div className="flex-end">{Math.floor(movie.popularity)}{"k"}</div>
+          <div className="flex-col">
+            <div className="flex gap-2">
+              <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+              {movie.vote_average.toFixed(1)}
+              {"/10"}
+            </div>
+            <div className="flex ">
+              {""}
+              {Math.floor(movie.popularity)}
+              {"k"}
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="relative flex gap-10 justify-between">
-        <Image
-          src={
-            movie.backdrop_path
-              ? `${TMDB_IMAGE_SERVICE_URL}${movie.backdrop_path}`
-              : "/placeholder.jpg"
-          }
-          width={290}
-          height={428}
-          alt={`${movie.title} backdrop`}
-
-          className="rounded-lg h-[428px] w-[290px] object-cover"
-        />
-      
-        <Image
-          src={
-            movie.poster_path
-              ? `${TMDB_IMAGE_SERVICE_URL}${movie.poster_path}`
-              : "/placeholder.jpg"
-          }
-          width={760}
-          height={428}
-          alt={`${movie.title} poster`}
-          className=" rounded-lg h-[428px] w-[760px] object-cover"
-          
-        />
-          <Video  movieId={movieId}/>
-      </div>
-      {movie.genres && (
-        <div className="flex gap-2">
-          {movie.genres.map((genre) => (
-            <span
-              key={genre.id}
-              className="px-3 py-1 bg-gray-200 rounded-full text-sm"
-            >
-              {genre.name}
-            </span>
-          ))}
+        <div className="relative flex gap-10 justify-between">
+          <Image
+            src={
+              movie.backdrop_path
+                ? `${TMDB_IMAGE_SERVICE_URL}${movie.backdrop_path}`
+                : "/placeholder.jpg"
+            }
+            width={290}
+            height={428}
+            alt={`${movie.title} backdrop`}
+            className="rounded-lg h-[428px] w-[290px] object-cover"
+          />
+          <div className="rounded-lg h-[428px] w-[760px] object-cover">
+            <Image
+              src={
+                movie.poster_path
+                  ? `${TMDB_IMAGE_SERVICE_URL}${movie.poster_path}`
+                  : "/placeholder.jpg"
+              }
+              width={760}
+              height={428}
+              alt={`${movie.title} poster`}
+              className=" rounded-lg h-[428px] w-[760px] object-cover"
+            />
+            <Video movieId={movieId} />
+          </div>
         </div>
-      )}
-      <h1>{movie.overview}</h1>
-      <h2>{movie.revenue}</h2>
-      <SimilarMovies movieId={movieId} />
-    
+        {movie.genres && (
+          <div className="flex gap-2">
+            {movie.genres.map((genre) => (
+              <span
+                key={genre.id}
+                className="px-3 py-1 bg-gray-200 rounded-full text-sm"
+              >
+                {genre.name}
+              </span>
+            ))}
+          </div>
+        )}
+        <div>
+          <Credits movieId={movieId} />
+        </div>
+        <SimilarMovies movieId={movieId} />
+      </div>
+      <Footer />
     </div>
-    <Footer/>
-</div>
   );
 };

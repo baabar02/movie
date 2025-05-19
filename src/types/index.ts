@@ -1,6 +1,5 @@
 import { MovieDetail } from "@/app/_components/detail/MovieDetail";
 
-
 export type Movie = {
   adult: boolean;
   backdrop_path: string;
@@ -16,9 +15,9 @@ export type Movie = {
   video: boolean;
   vote_average: number;
   vote_count: number;
-  credit: string
-  cast:string
-  crew:string
+  credit: string;
+  cast: string;
+  crew: string;
 };
 
 export interface MovieDetails {
@@ -48,13 +47,9 @@ export interface MovieDetails {
   video: boolean;
   vote_average: number;
   vote_count: number;
-  cast:string[];
-  crew:string[];
-
+  cast: string[];
+  crew: string[];
 }
-
-
-
 
 export interface Genre {
   id: number;

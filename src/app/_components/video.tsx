@@ -1,5 +1,3 @@
-
-
 import { useEffect, useState } from "react";
 import { getVideoApi } from "../hooks/get-video-api";
 import { PlayCircle } from "lucide-react";
@@ -26,19 +24,19 @@ export const Video = ({ movieId }: VideoProps) => {
   if (!trailerKey) return null;
 
   return (
-    <div className="absolute mt-80 left-[-20px] w-full flex flex-col items-center">
+    <div className="absolute mt-[-80px] left-[400px]  flex flex-col items-center">
       {!showPlayer ? (
         <button
           onClick={() => setShowPlayer(true)}
-          className="flex items-center gap-2 text-white bg-transparent hover:bg-red-600 px-4 py-2 rounded-full transition"
+          className="flex items-center gap-2 text-white bg-yellow-400 hover:bg-red-600 px-4 py-2 rounded-full transition"
         >
-          <PlayCircle className=" w-5 h-5" />
+          <PlayCircle className="" />
           Watch Trailer
         </button>
       ) : (
-        <div className=" w-full rounded-lg overflow-hidden shadow-md">
+        <div className="absolute left-[-70px] mt-[-348px]  rounded-lg h-[428px] w-[750px] overflow-hidden shadow-md">
           <iframe
-            className="w-full h-full"
+            className="h-full w-full"
             src={`https://www.youtube.com/embed/${trailerKey}`}
             title="Trailer"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
