@@ -10,8 +10,13 @@ import { useParams } from "next/navigation";
 
 const TMDB_IMAGE_SERVICE_URL = "https://image.tmdb.org/t/p/original";
 
-const SimilarMoviesPage = () => {
-  const { movieId } = useParams();
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
+
+const SimilarMoviesPage = ({}:PageProps) => {
   const [similar, setSimilar] = useState<MovieDetails[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -28,7 +33,7 @@ const SimilarMoviesPage = () => {
     };
 
     fetchData();
-  }, [movieId]);
+  }, []);
 
   return (
     <div>

@@ -13,6 +13,7 @@ import { Credits } from "../credits";
 
 type MovieDetailProps = {
   movieId: string;
+
 };
 
 const TMDB_IMAGE_SERVICE_URL = "https://image.tmdb.org/t/p/original";
@@ -60,8 +61,11 @@ export const MovieDetail = ({ movieId }: MovieDetailProps) => {
   const formattedDate = new Date(movie.release_date ?? "").toLocaleDateString();
 
   return (
-    <div className="flex flex-col gap-5 max-w-screen-xl mx-auto  justify-between">
-      <div className="flex flex-col gap-5 max-w-screen-xl mx-auto px-25 justify-between">
+    <div 
+    className="flex flex-col gap-5 w-full sticky top-0 z-10 sm:max-w-screen-xl mx-auto h-[56px] sm:h-[60px] justify-between sm:justify-between items-center px-3 sm:px-4 mx-auto h-[60px] justify-between items-between border-none  px-4"
+    >
+      {/* flex flex-row max-w-screen-xl sticky top-0 z-10 bg-background w-full mx-auto h-[56px] sm:h-[60px] justify-between items-center px-3 sm:px-4 mx-auto h-[60px] justify-between items-between border-none border-gray-200 dark:border-gray-700 px-4 */}
+      <div className="flex flex-col gap-5 max-w-screen-xl mx-auto px-5 sm:px-25 justify-between sm:justify-between">
         <div className="flex mt-10 justify-between">
           <p className="text-2xl font-bold">{movie.title}</p>
           <p>Rating</p>
@@ -84,8 +88,12 @@ export const MovieDetail = ({ movieId }: MovieDetailProps) => {
             </div>
           </div>
         </div>
-        <div className="relative flex gap-10 justify-between">
+        <div className="relative flex flex-col sm:flex-row gap-5 justify-between"
+        // className="relative flex gap-10 justify-between"
+         >
+        
           <Image
+
             src={
               movie.backdrop_path
                 ? `${TMDB_IMAGE_SERVICE_URL}${movie.backdrop_path}`
@@ -94,9 +102,9 @@ export const MovieDetail = ({ movieId }: MovieDetailProps) => {
             width={290}
             height={428}
             alt={`${movie.title} backdrop`}
-            className="rounded-lg h-[428px] w-[290px] object-cover"
+            className="hidden sm:flex rounded-lg sm:h-[428px] sm:w-[290px] object-cover"
           />
-          <div className="rounded-lg h-[428px] w-[760px] object-cover">
+          <div className="rounded-lg h-[283px] sm:h-[428px] sm:w-[760px] object-cover">
             <Image
               src={
                 movie.poster_path
@@ -106,12 +114,28 @@ export const MovieDetail = ({ movieId }: MovieDetailProps) => {
               width={760}
               height={428}
               alt={`${movie.title} poster`}
-              className=" rounded-lg h-[428px] w-[760px] object-cover"
+              className="w-[375px] h-[283px] rounded-lg sm:h-[428px] sm:w-[760px] object-cover"
             />
             <Video movieId={movieId} />
           </div>
-        </div>
-        {movie.genres && (
+        
+     
+          </div>
+<div className="flex gap-10 h-[344px] sm:hidden block">
+       <Image
+
+            src={
+              movie.backdrop_path
+                ? `${TMDB_IMAGE_SERVICE_URL}${movie.backdrop_path}`
+                : "/placeholder.jpg"
+            }
+            width={290}
+            height={428}
+            alt={`${movie.title} backdrop`}
+            className="sm:hidden block rounded-lg h-[148px] w-[100px] object-cover"
+          />
+    <div className="flex flex-col w-[201px] ">
+         {movie.genres && (
           <div className="flex gap-2">
             {movie.genres.map((genre) => (
               <span
@@ -121,11 +145,37 @@ export const MovieDetail = ({ movieId }: MovieDetailProps) => {
                 {genre.name}
               </span>
             ))}
+          
           </div>
         )}
-        <div>
+           <div className="mt-[20px] text-sm overflow-hidden sm:hidden block">{movie.overview}</div>
+      
+        </div>
+          
+</div>
+       <div className="hidden sm:block">
+         {movie.genres && (
+          <div className="flex gap-2">
+            {movie.genres.map((genre) => (
+              <span
+                key={genre.id}
+                className="px-3 py-1 bg-gray-200 rounded-full text-sm"
+              >
+                {genre.name}
+              </span>
+            ))}
+           
+          </div>
+        )}
+       
+       
+        </div>
+         <div className="hidden sm:block">{movie.overview}</div>
+ <div>
           <Credits movieId={movieId} />
         </div>
+     
+
         <SimilarMovies movieId={movieId} />
       </div>
       <Footer />
