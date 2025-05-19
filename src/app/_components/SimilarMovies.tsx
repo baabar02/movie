@@ -52,7 +52,7 @@ const SimilarMovies = ({ movieId }: SimilarMoviesProps) => {
     <div className="w-full max-w-screen-xl px-4 sm:px-6 lg:px-8 py-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">
-          Similar Movies
+          More like this
         </h1>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 justify-items-center">
