@@ -1,3 +1,4 @@
+
 "use client";
 import {
   NavigationMenu,
@@ -9,88 +10,73 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ChevronRight, Moon, Search, Sun } from "lucide-react";
+import { ChevronRight, Moon, Search, Sun, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { SearchPage } from "../search/page";
-import { MovieDetails } from "@/types";
-import { getSearchApi } from "../hooks/get-search-api";
+import { getGenreApi } from "../hooks/get-genre-api";
 
-type MovieDetailProps = {
+interface Genre {
+  id: number;
+  name: string;
+}
+
+interface MovieDetailProps {
   movieId: string;
-};
+}
 
 export const Header = ({ movieId }: MovieDetailProps) => {
-  const [genreFilter, setGenreFilter] = useState<MovieDetails[]>([]);
-
+  const [genreFilter, setGenreFilter] = useState<Genre[]>([]);
+  const [error, setError] = useState<string | null>(null);
   const { setTheme, resolvedTheme } = useTheme();
   const isDarkTheme = resolvedTheme === "dark";
-
-  const toggleTheme = () => setTheme(isDarkTheme ? "light" : "dark");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const clearHandle = () => {
-    // setIsSearchOpen(!isSearchOpen ? isSearchOpen : false);
-    setIsSearchOpen((prev) => !prev);
-  };
+
+  const toggleTheme = () => setTheme(isDarkTheme ? "light" : "dark");
+
+
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
-    console.log(setSearchQuery, "ss");
   };
 
-  const toggleSearch = () => {
-    setIsSearchOpen(!isSearchOpen);
-    console.log("search toggle", !isSearchOpen);
-  };
-  const router = useRouter();
-  const routerHandle = (path: string) => {
-    router.push(path);
-  };
-
-  const handleLogoClick = () => {
-    router.push("/upcoming");
+  const clearHandle = () => {
+    setIsSearchOpen(false);
+    setSearchQuery("");
   };
 
   useEffect(() => {
-    const fetchSearch = async () => {
-      const response = await getSearchApi(movieId);
-      console.log("Fetch:", response.results);
-      setGenreFilter(response);
+    const fetchGenres = async () => {
+      try {
+        const genres = await getGenreApi();
+        setGenreFilter(genres);
+      } catch (err) {
+        setError("Failed to fetch genres. Please try again.");
+        console.error(err);
+      }
     };
-    fetchSearch();
-  }, [movieId]);
+    fetchGenres();
+  }, []); // No dependency needed for static genres
 
   return (
-    <header className="flex flex-row max-w-screen-xl sticky top-0 z-10 bg-background w-full mx-auto h-[56px] sm:h-[60px]  items-center  sm:px-4   justify-between items-between border-none border-gray-200 dark:border-gray-700 px-4">
+    <header className="flex max-w-screen-xl sticky top-0 z-10 bg-background w-full mx-auto h-[56px] sm:h-[60px] items-center sm:px-4 justify-between border-none border-gray-200 dark:border-gray-700 px-4">
       <div className={`${isSearchOpen ? "hidden sm:flex" : "flex"}`}>
-        <Link
-          // onClick={()=>handleLogoClick()}
-          href={`/`}
-        >
-          <div>
-            <Image
-              defaultValue={searchQuery}
-              onClick={() => routerHandle(`/details/page`)}
-              src="/Logo.png"
-              alt="Movie App Logo"
-              width={80}
-              height={18}
-              className="sm:w-[92px] sm:h-[20px] object-contain"
-            />
-          </div>
+        <Link href="/upcoming">
+          <Image
+            src="/Logo.png"
+            alt="Movie App Logo"
+            width={80}
+            height={18}
+            className="sm:w-[92px] sm:h-[20px] object-contain"
+          />
         </Link>
       </div>
 
-      {/* <SearchPage  /> */}
-
-      <div className="flex space-between sm:space-x-4">
-        <div
-          className={`${isSearchOpen} ? "absolute left-3 sm:static sm: flex":"flex"`}
-        >
+      <div className="flex space-x-4">
+        <div className={`${isSearchOpen ? "absolute left-3 sm:static sm:flex" : "flex"}`}>
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
@@ -98,23 +84,25 @@ export const Header = ({ movieId }: MovieDetailProps) => {
                   Genre
                 </NavigationMenuTrigger>
                 <NavigationMenuContent className="p-3 sm:p-4 w-[90vw] max-w-[400px] sm:max-w-[500px]">
-                  <h1 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">
-                    Genre
-                  </h1>
-                  <h2 className="text-sm text-muted-foreground mb-4">
-                    See lists of movies by genres
-                  </h2>
+                  <h1 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">Genre</h1>
+                  <h2 className="text-sm text-muted-foreground mb-4">See lists of movies by genres</h2>
                   <div className="flex flex-row flex-wrap gap-2">
-                    {genreFilter.map((genre, index) => (
-                      <Link key={index} href={`/genres/${genre.tolowercase()}`}>
-                        <NavigationMenuLink>
-                          <Badge className="bg-transparent border border-gray-300 dark:border-gray-600 text-foreground hover:bg-gray-800 dark:hover:bg-gray-800 px-2 py-1 text-xs sm:text-sm cursor-pointer">
-                            {genre.genres}
-                            <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 ml-1" />
-                          </Badge>
-                        </NavigationMenuLink>
-                      </Link>
-                    ))}
+                    {error ? (
+                      <p className="text-red-500">{error}</p>
+                    ) : genreFilter.length === 0 ? (
+                      <p className="text-gray-500">No genres available</p>
+                    ) : (
+                      genreFilter.map((genre) => (
+                        <Link key={genre.id} href={`/genres/${genre.name.toLowerCase()}`}>
+                          <NavigationMenuLink>
+                            <Badge className="bg-transparent border border-gray-300 dark:border-gray-600 text-foreground hover:bg-gray-500 dark:hover:bg-gray-800 px-2 py-1 text-xs sm:text-sm cursor-pointer">
+                              {genre.name}
+                              <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 ml-1" />
+                            </Badge>
+                          </NavigationMenuLink>
+                        </Link>
+                      ))
+                    )}
                   </div>
                 </NavigationMenuContent>
               </NavigationMenuItem>
@@ -124,20 +112,17 @@ export const Header = ({ movieId }: MovieDetailProps) => {
       </div>
 
       <div
-        className={`${
-          isSearchOpen ? "hidden sm:flex" : "flex"
-        } items-center border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 rounded-lg px-2 sm:px-3 h-[32px] sm:h-[36px]`}
+        className={`${isSearchOpen ? "hidden sm:flex" : "flex"} items-center border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 rounded-lg px-2 sm:px-3 h-[32px] sm:h-[36px]`}
       >
         <Button
           variant="ghost"
           size="icon"
           className="w-8 h-8 sm:w-6 sm:h-6 p-0"
-          onClick={toggleSearch}
-          aria-label="Toggle search"
+          onClick={() => setIsSearchOpen(true)}
+          aria-label="Open search"
         >
           <Search className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
         </Button>
-
         <div className="hidden sm:flex items-center w-[min(200px,60vw)] sm:w-[min(300px,70vw)] md:w-[380px]">
           <Input
             id="search"
@@ -152,9 +137,9 @@ export const Header = ({ movieId }: MovieDetailProps) => {
       </div>
 
       {isSearchOpen && (
-        <div className="flex left-10 w-90 bg-white dark:bg-gray-900 p-3 sm:hidden ">
-          <div className=" flex w-full items-center border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 rounded-lg px-2">
-            <Search className="w-4 h-4 text-gray-500" />{" "}
+        <div className="absolute left-3 right-3 top-14 bg-white dark:bg-gray-400 p-3 sm:hidden">
+          <div className="flex w-full items-center border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 rounded-lg px-2">
+            <Search className="w-4 h-4 text-gray-500" />
             <Input
               id="mobile-search"
               type="text"
@@ -163,11 +148,18 @@ export const Header = ({ movieId }: MovieDetailProps) => {
               className="border-none bg-transparent focus:ring-0 text-xs w-full h-full"
               placeholder="Search movies..."
               aria-label="Search movies"
+              autoFocus
             />
-            <Button onClick={clearHandle} size="icon" variant="ghost">
-              x
+            <Button
+              onClick={clearHandle}
+              size="icon"
+              variant="ghost"
+              aria-label="Clear and close search"
+            >
+              <X className="w-4 h-4 text-gray-500" />
             </Button>
           </div>
+          {searchQuery && <SearchPage searchValue={searchQuery} page="1" />}
         </div>
       )}
 
@@ -178,11 +170,7 @@ export const Header = ({ movieId }: MovieDetailProps) => {
         onClick={toggleTheme}
         aria-label={`Switch to ${isDarkTheme ? "light" : "dark"} mode`}
       >
-        {isDarkTheme ? (
-          <Sun className="w-5 h-5" />
-        ) : (
-          <Moon className="w-5 h-5" />
-        )}
+        {isDarkTheme ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
       </Button>
     </header>
   );

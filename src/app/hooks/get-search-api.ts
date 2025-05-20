@@ -1,5 +1,21 @@
 import axios from "axios";
 
+interface Movie {
+  id: number;
+  title: string;
+  original_title: string;
+  overview: string;
+  poster_path: string | null;
+  release_date: string;
+  genre_ids: number[];
+}
+interface SearchApiResponse {
+  page: number;
+  results: Movie[];
+  total_pages: number;
+  total_results: number;
+}
+
 export const getSearchApi = async (searchValue: string, page: string) => {
   const config = {
     headers: {
@@ -10,7 +26,7 @@ export const getSearchApi = async (searchValue: string, page: string) => {
   };
 
   const result = await axios.get(
-    `https://api.themoviedb.org/3/search/movie?query=${searchValue}&language=en-US&page=${page}`,
+    `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(searchValue)}&language=en-US&page=${page}`,
     config
   );
   console.log(result, "search");

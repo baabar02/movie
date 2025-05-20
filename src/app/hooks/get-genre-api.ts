@@ -1,6 +1,11 @@
 import axios from "axios";
 
-export const getGenreApi = async () => {
+interface Genre {
+  id: number;
+  name: string;
+}
+
+export const getGenreApi = async ():Promise<Genre[]> => {
   const config = {
     headers: {
       "Content-type": "application/json",
