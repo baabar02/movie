@@ -1,4 +1,4 @@
-import Upcoming from "./Upcoming";
+import Upcoming from "./upcoming";
 import Image from "next/image";
 
 type UpcomingMovies = {

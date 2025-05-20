@@ -16,28 +16,21 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { SearchPage } from "../search/page";
+import { MovieDetails } from "@/types";
+import { getSearchApi } from "../hooks/get-search-api";
 
-export const Header = () => {
-  const genreFilter: string[] = [
-    "Action",
-    "Adventure",
-    "Animation",
-    "Comedy",
-    "Sci-Fi",
-    "Biography",
-    "Crime",
-    "Documentary",
-    "Mystery",
-    "Drama",
-    "History",
-    "Thriller",
-  ];
+type MovieDetailProps = {
+  movieId: string;
+};
+
+export const Header = ({ movieId }: MovieDetailProps) => {
+  const [genreFilter, setGenreFilter] = useState<MovieDetails[]>([]);
 
   const { setTheme, resolvedTheme } = useTheme();
   const isDarkTheme = resolvedTheme === "dark";
 
   const toggleTheme = () => setTheme(isDarkTheme ? "light" : "dark");
-
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const clearHandle = () => {
@@ -48,6 +41,7 @@ export const Header = () => {
     setSearchQuery(event.target.value);
     console.log(setSearchQuery, "ss");
   };
+
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
     console.log("search toggle", !isSearchOpen);
@@ -61,12 +55,21 @@ export const Header = () => {
     router.push("/upcoming");
   };
 
+  useEffect(() => {
+    const fetchSearch = async () => {
+      const response = await getSearchApi(movieId);
+      console.log("Fetch:", response.results);
+      setGenreFilter(response);
+    };
+    fetchSearch();
+  }, [movieId]);
+
   return (
-    <header className="flex flex-row max-w-screen-xl sticky top-0 z-10 bg-background w-full mx-auto h-[56px] sm:h-[60px] justify-between items-center px-3 sm:px-4 mx-auto h-[60px] justify-between items-between border-none border-gray-200 dark:border-gray-700 px-4">
+    <header className="flex flex-row max-w-screen-xl sticky top-0 z-10 bg-background w-full mx-auto h-[56px] sm:h-[60px]  items-center  sm:px-4   justify-between items-between border-none border-gray-200 dark:border-gray-700 px-4">
       <div className={`${isSearchOpen ? "hidden sm:flex" : "flex"}`}>
         <Link
           // onClick={()=>handleLogoClick()}
-          href={`/details/page`}
+          href={`/`}
         >
           <div>
             <Image
@@ -81,6 +84,8 @@ export const Header = () => {
           </div>
         </Link>
       </div>
+
+      {/* <SearchPage  /> */}
 
       <div className="flex space-between sm:space-x-4">
         <div
@@ -101,11 +106,11 @@ export const Header = () => {
                   </h2>
                   <div className="flex flex-row flex-wrap gap-2">
                     {genreFilter.map((genre, index) => (
-                      <Link key={index} href={`/genres/${genre.toLowerCase()}`}>
+                      <Link key={index} href={`/genres/${genre.tolowercase()}`}>
                         <NavigationMenuLink>
                           <Badge className="bg-transparent border border-gray-300 dark:border-gray-600 text-foreground hover:bg-gray-800 dark:hover:bg-gray-800 px-2 py-1 text-xs sm:text-sm cursor-pointer">
-                            {genre}
-                            <ChevronRight className="w-3 h-3 ml-1 sm:w-4 sm:h-4 ml-1" />
+                            {genre.genres}
+                            <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 ml-1" />
                           </Badge>
                         </NavigationMenuLink>
                       </Link>

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const getSearch = async () => {
+export const getSearchApi = async (searchValue: string, page: string) => {
   const config = {
     headers: {
       "Content-type": "application/json",
@@ -10,10 +10,10 @@ export const getSearch = async () => {
   };
 
   const result = await axios.get(
-    "https://api.themoviedb.org/3/search/movie?query=${searchValue}&language=en-US&page=${page}",
+    `https://api.themoviedb.org/3/search/movie?query=${searchValue}&language=en-US&page=${page}`,
     config
   );
-  console.log(result,'search');
-  
+  console.log(result, "search");
+
   return result?.data.search;
 };

@@ -1,7 +1,4 @@
 import { MovieDetail } from "@/app/_components/detail/MovieDetail";
-import SimilarMoviesPage from "@/app/_components/detail/similarPage";
-import UpcomingFullPage from "@/app/_components/upcoming/UpcomingPage";
-import Upcoming from "@/app/_components/Upcoming";
 
 type PageProps = {
   params: {
