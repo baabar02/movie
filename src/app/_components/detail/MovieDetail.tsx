@@ -74,7 +74,7 @@ export const MovieDetail = ({ movieId }: MovieDetailProps) => {
           <div className="flex-col">
             <div className="flex gap-2">
               <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
-              {/* {movie.vote_average.toFixed(1)} */}
+              {movie.vote_average.toFixed(1)}
               {"/10"}
             </div>
             <div className="flex ">
@@ -84,10 +84,7 @@ export const MovieDetail = ({ movieId }: MovieDetailProps) => {
             </div>
           </div>
         </div>
-        <div
-          className="relative flex flex-col sm:flex-row gap-5 justify-between"
-          // className="relative flex gap-10 justify-between"
-        >
+        <div className="relative flex flex-col sm:flex-row gap-5 justify-between">
           <Image
             src={
               movie.backdrop_path
