@@ -12,7 +12,7 @@ export default function DetailsPage({ params }: PageProps) {
   return (
     <div>
       <MovieDetail movieId={id} />
-      {/* <UpcomingFullPage  /> */}
+ 
     </div>
   );
 }

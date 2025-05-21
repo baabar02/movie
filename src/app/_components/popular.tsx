@@ -1,10 +1,12 @@
 "use client";
 
-import { Movies } from "./movies";
+
 import { ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getPopularApi } from "../hooks/get-popular-api";
 import Link from "next/link";
+import { MovieDetail } from "./detail/MovieDetail";
+import { Movies } from "./movies";
 import { Movie } from "@/types";
 
 // type PopularProps = {

@@ -13,6 +13,7 @@ type UpcomingMovies = {
   original_title: string;
   vote_average: number | string;
   backdrop_path: string;
+  
 };
 
 interface PageProps {

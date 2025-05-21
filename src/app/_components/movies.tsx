@@ -1,3 +1,5 @@
+
+
 import Upcoming from "./upcoming";
 import Image from "next/image";
 
@@ -5,6 +7,7 @@ type UpcomingMovies = {
   title: string;
   image: string;
   vote: string | number;
+  releaseYear?:string
 };
 
 interface PageProps {
@@ -15,7 +18,7 @@ interface PageProps {
 
 const TMDB_IMAGE_SERVICE_URL = "https://image.tmdb.org/t/p/original/";
 
-export const Movies = ({ title, vote, image }: UpcomingMovies) => {
+export const Movies = ({ title, vote, image,releaseYear }: UpcomingMovies) => {
   return (
     <div className="flex flex-col w-[158px] sm:w-[180px] md:w-[200px] h-[280px] lg:h-[340px] bg-gray-200 dark:bg-gray-800  rounded-[8px]">
       <div className="w-full h-[234px] sm:h-[234px] lg:h-[260px] rounded-t-[8px] bg-gray-300">
