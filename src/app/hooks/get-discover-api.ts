@@ -1,8 +1,7 @@
 "use client";
-import { Genre } from "@/types";
 import axios from "axios";
 
-export const getGenreApi = async () => {
+export const getDiscoverApi = async (genreIds: string, page: string) => {
   const config = {
     headers: {
       "Content-type": "application/json",
@@ -12,11 +11,9 @@ export const getGenreApi = async () => {
   };
 
   const result = await axios.get(
-    "https://api.themoviedb.org/3/genre/movie/list?language=en",
+    `https://api.themoviedb.org/3/discover/movie?language=en&with_genres=${genreIds}&page=${page}`,
 
     config
   );
-  console.log(result, "genre");
-
-  return result.data;
+  return result?.data?.results;
 };

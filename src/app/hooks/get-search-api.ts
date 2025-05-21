@@ -26,10 +26,11 @@ export const getSearchApi = async (searchValue: string, page: string) => {
   };
 
   const result = await axios.get(
-    `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(searchValue)}&language=en-US&page=${page}`,
+    `https://api.themoviedb.org/3/search/movie?query=${searchValue}&language=en-US&page=${page}`,
     config
   );
-  console.log(result, "search");
 
-  return result?.data.search;
+  console.log(result.data);
+
+  return result?.data.results;
 };
