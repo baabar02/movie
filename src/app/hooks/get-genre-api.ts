@@ -16,7 +16,5 @@ export const getGenreApi = async () => {
 
     config
   );
-  console.log(result, "genre");
-
   return result.data;
 };

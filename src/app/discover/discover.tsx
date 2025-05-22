@@ -31,7 +31,6 @@ const DiscoverPage = ({ genreIds, page }: Discover) => {
       const response = await getDiscoverApi(genreIds, page);
       const firstTen = response?.splice(0, 10);
       setDiscover(firstTen);
-      console.log(response, "genre");
     };
     discoverPlay();
   }, []);

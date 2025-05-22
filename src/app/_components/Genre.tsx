@@ -27,81 +27,73 @@ const TMDB_IMAGE_SERVICE_URL = "https://image.tmdb.org/t/p/original";
 export const GenrePageComponent = ({ genreName }: GenreProps) => {
   const [showGenre, setShowGenre] = useState<Genre[]>([]);
   const [movies, setMovies] = useState<MovieDetails[]>([]);
-  const [page,setPage] = useState(1)
-  const [totalPage,setTotalPage] = useState(1)
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
 
   useEffect(() => {
     const genrePlay = async () => {
-      try {
-        const response = await getGenreApi();
-        setShowGenre(response.genres);
+      const response = await getGenreApi();
 
-        const findId = response.genres.find(
-          (item: Genre) => item.name.toLowerCase() === genreName
-        );
-      
-        const tuhianGenreIinKinonuud = await getDiscoverApi(findId.id,"1");
-        setMovies(tuhianGenreIinKinonuud);
-        // setTotalPage(tuhianGenreIinKinonuud.totalPage)
-       
-      
-      } catch (err) {}
+      setShowGenre(response.genres);
+
+      const findId = response.genres.find(
+        (item: Genre) => item.name.toLowerCase() === genreName
+      );
+
+      const tuhianGenreIinKinonuud = await getDiscoverApi(findId.id, "1");
+      setMovies(tuhianGenreIinKinonuud);
+      // setTotalPage(tuhianGenreIinKinonuud.totalPage)
     };
     genrePlay();
   }, []);
-  const handleNext =()=>{
-    if(page < totalPage) 
-      setPage(page + 1)
-  }
+  const handleNext = () => {
+    if (page < totalPage) setPage(page + 1);
+  };
 
-  const handlePrevious =()=> {
-    if(page > 1) 
-      setPage(page - 1)
-  }
+  const handlePrevious = () => {
+    if (page > 1) setPage(page - 1);
+  };
 
   console.log(showGenre, "showGenre");
 
   return (
     <div className="w-full max-w-screen-xl mx-auto items-center sm:px-6 lg:px-8 py-6 gap-[10px] px-5">
-     <div>
-
-      
-     </div>
+      <div></div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">
           Search by genre
         </h1>
-          <Link
+        <Link
           href={`/genre`}
           className="flex items-center gap-1 text-sm sm:text-base text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 cursor-pointer "
         >
           Back <ChevronRight className="w-4 h-4" />
         </Link>
+      </div>
+      <div className="flex">
+        <div className="">
+          <div className=" sm:w-[387px] grid sm:grid grid-cols-3 sm:grid-cols-3 gap-5 justify-items-center">
+            {showGenre.map((el) =>
+              el.name ? (
+                <Link href={`/genre/${el.name.toLowerCase()}`} key={el.id}>
+                  <span className="gap-10 rounded-lg bg-transparent border border-gray-300 dark:border-gray-600 text-foreground hover:bg-gray-500 dark:hover:bg-gray-800 px-2 py-1 text-xs sm:text-sm cursor-pointer">
+                    {el.name}
+                  </span>
+                </Link>
+              ) : null
+            )}
+          </div>
         </div>
-        <div className="flex">
-      <div className="">
-       <div className="flex sm:w-[387px] grid grid-cols-3 sm:grid-cols-3 gap-5 justify-items-center">
-        {showGenre.map((el) => (
-          el.name ? (         
-            <Link href={`/genre/${el.name.toLowerCase()}`} key={el.id}>
-            <span className="gap-10 rounded-lg bg-transparent border border-gray-300 dark:border-gray-600 text-foreground hover:bg-gray-500 dark:hover:bg-gray-800 px-2 py-1 text-xs sm:text-sm cursor-pointer">
-              {el.name}
-            </span>
-          </Link> ): null
 
-        ))}
-      </div>
-      </div>
-
-     <div className="grid grid-cols-1 sm:grid-cols-4 gap-5">
-  {movies?.map((el) => (
-    <div
-      key={el.id}
-      className="w-[165px] h-[331px] object-cover overflow-hidden rounded-md"
-    >
-      <Link href={`/details/${el.id}`} aria-label={`View details for ${el.title}`}>
-       <Image
-                src={
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-5">
+          {movies?.map((el) => (
+            <div
+              key={el.id}
+              className="w-[165px] h-[331px] object-cover overflow-hidden rounded-md"
+            >
+              <Link href={`/details/${el.id}`} aria-label={` ${el.title}`}>
+                <Image
+                  src={
                     el.backdrop_path
                       ? `${TMDB_IMAGE_SERVICE_URL}${el.backdrop_path}`
                       : "/placeholder.jpg"
@@ -111,17 +103,18 @@ export const GenrePageComponent = ({ genreName }: GenreProps) => {
                   alt={`${el.title} backdrop`}
                   className="hidden  sm:flex rounded-lg h-[224px] w-[165px] object-cover"
                 />
-               <div className="flex">
-                <Star className="text-yellow-400 fill-yellow-400"/>
-                 <p>{el.vote_average.toFixed(1)}{"/10"}</p>
-                </div> 
+                <div className="flex">
+                  <Star className="text-yellow-400 fill-yellow-400" />
+                  <p>
+                    {el.vote_average.toFixed(1)}
+                    {"/10"}
+                  </p>
+                </div>
                 <p>{el.title}</p>
-    
-      </Link>
-    </div>
-  ))}
-</div>
-
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
       <div className="flex justify-center gap-4 mt-6">
         {/* <button
@@ -148,9 +141,7 @@ export const GenrePageComponent = ({ genreName }: GenreProps) => {
           Next
         </button> */}
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };
-
-  

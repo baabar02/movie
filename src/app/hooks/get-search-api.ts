@@ -14,6 +14,7 @@ interface SearchApiResponse {
   results: Movie[];
   total_pages: number;
   total_results: number;
+  searchValue: string;
 }
 
 export const getSearchApi = async (searchValue: string, page: string) => {
@@ -30,7 +31,5 @@ export const getSearchApi = async (searchValue: string, page: string) => {
     config
   );
 
-  console.log(result.data);
-
-  return result?.data.results;
+  return result?.data;
 };
