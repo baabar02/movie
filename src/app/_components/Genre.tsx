@@ -12,6 +12,7 @@ import { NavigationMenuLink } from "@radix-ui/react-navigation-menu";
 import Image from "next/image";
 import { Movies } from "./movies";
 import Footer from "./footer";
+import { parseAsInteger, useQueryState } from "nuqs";
 
 type GenreProps = {
   genreName: string;
@@ -27,29 +28,28 @@ const TMDB_IMAGE_SERVICE_URL = "https://image.tmdb.org/t/p/original";
 export const GenrePageComponent = ({ genreName }: GenreProps) => {
   const [showGenre, setShowGenre] = useState<Genre[]>([]);
   const [movies, setMovies] = useState<MovieDetails[]>([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [totalPage, setTotalPage] = useState(1);
 
   useEffect(() => {
     const genrePlay = async () => {
       const response = await getGenreApi();
-
       setShowGenre(response.genres);
 
       const findId = response.genres.find(
         (item: Genre) => item.name.toLowerCase() === genreName
       );
 
-      const tuhianGenreIinKinonuud = await getDiscoverApi(findId.id, "1");
-      setMovies(tuhianGenreIinKinonuud);
-      // setTotalPage(tuhianGenreIinKinonuud.totalPage)
+      const tuhianGenreIinKinonuud = await getDiscoverApi(findId.id, page);
+      setTotalPage(tuhianGenreIinKinonuud.total_pages);
+      setMovies(tuhianGenreIinKinonuud.results);
     };
     genrePlay();
-  }, []);
+  }, [page]);
+
   const handleNext = () => {
     if (page < totalPage) setPage(page + 1);
   };
-
   const handlePrevious = () => {
     if (page > 1) setPage(page - 1);
   };
@@ -117,7 +117,7 @@ export const GenrePageComponent = ({ genreName }: GenreProps) => {
         </div>
       </div>
       <div className="flex justify-center gap-4 mt-6">
-        {/* <button
+        <button
           onClick={handlePrevious}
           className={`px-4 py-2 rounded-md ${
             page === 1
@@ -139,7 +139,7 @@ export const GenrePageComponent = ({ genreName }: GenreProps) => {
           }`}
         >
           Next
-        </button> */}
+        </button>
       </div>
       <Footer />
     </div>

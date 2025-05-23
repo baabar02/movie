@@ -1,4 +1,3 @@
-
 "use client";
 import {
   NavigationMenu,
@@ -16,16 +15,16 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Movie, Genre } from "@/types"; 
+import { Movie, Genre } from "@/types";
 import { getGenreApi } from "../hooks/get-genre-api";
 import { getSearchApi } from "../hooks/get-search-api";
-import SearchDialog from "./searchDialog/SearchDialog";
+import { SearchDialog } from "./searchDialog/SearchDialog";
 
-interface MovieDetailProps {
+type SearchDialogProps = {
+  movies: Movie[];
   movieId: string;
-}
-
-export const Header = ({ movieId }: MovieDetailProps) => {
+};
+export const Header = ({ movieId }: SearchDialogProps) => {
   const [genreFilter, setGenreFilter] = useState<Genre[]>([]);
   const [error, setError] = useState<string | null>(null);
   const { setTheme, resolvedTheme } = useTheme();
@@ -47,45 +46,23 @@ export const Header = ({ movieId }: MovieDetailProps) => {
 
   useEffect(() => {
     const fetchGenres = async () => {
-      try {
-        const response = await getGenreApi();
-        setGenreFilter(response.genres);
-      } catch (error) {
-        setError("Failed to fetch genres");
-      }
+      const response = await getGenreApi();
+      setGenreFilter(response.genres);
     };
     fetchGenres();
   }, []);
 
-useEffect(() => {
-  if (searchQuery.length < 5) {
-    setSearchedMovies([]);
-    return;
-  }
+  useEffect(() => {
+    onSearchMovies();
+  }, [searchQuery]);
 
-  const timeout = setTimeout(async () => {
-    
-      const movies = await getSearchApi(searchQuery, "1");
-      setSearchedMovies(movies);
-  
-  }, 300);
-
-  return () => clearTimeout(timeout);
-}, [searchQuery]);
-
-
-
-
-
-   const onSearchMovies = async () => {
+  const onSearchMovies = async () => {
     const movies = await getSearchApi(searchQuery, "1");
-    setSearchedMovies(movies);
-    console.log(movies, 'asdasd');
-    
+    setSearchedMovies(movies.results);
   };
 
   return (
-    <header className="flex max-w-screen-xl sticky top-0 z-10 bg-background w-full mx-auto h-[56px] sm:h-[60px] items-center sm:px-4 justify-between border-none px-4">
+    <div className="flex max-w-screen-xl sticky top-0 z-10 bg-background w-full mx-auto h-[56px] sm:h-[60px] items-center sm:px-4 justify-between border-none px-4">
       <div className={`${isSearchOpen ? "hidden sm:flex" : "flex"}`}>
         <Link href="/">
           <Image
@@ -99,7 +76,11 @@ useEffect(() => {
       </div>
 
       <div className="flex space-x-4">
-        <div className={`${isSearchOpen ? "absolute left-3 sm:static sm:flex" : "flex"}`}>
+        <div
+          className={`${
+            isSearchOpen ? "absolute left-3 sm:static sm:flex" : "flex"
+          }`}
+        >
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
@@ -107,13 +88,18 @@ useEffect(() => {
                   Genre
                 </NavigationMenuTrigger>
                 <NavigationMenuContent className="p-3 sm:p-4 w-[90vw] max-w-[400px] sm:max-w-[500px]">
-                  <h1 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">Genre</h1>
+                  <h1 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">
+                    Genre
+                  </h1>
                   <h2 className="text-sm sm:w-[500px] text-muted-foreground mb-4">
                     See lists of movies by genres
                   </h2>
                   <div className="flex flex-row flex-wrap gap-2">
                     {genreFilter?.map((genre) => (
-                      <Link key={genre.id} href={`/genre/${genre.name.toLowerCase()}`}>
+                      <Link
+                        key={genre.id}
+                        href={`/genre/${genre.name.toLowerCase()}`}
+                      >
                         <NavigationMenuLink>
                           <Badge className="bg-transparent border border-gray-300 dark:border-gray-600 text-foreground hover:bg-gray-500 dark:hover:bg-gray-500 px-2 py-1 text-xs sm:text-sm cursor-pointer">
                             {genre.name}
@@ -131,7 +117,9 @@ useEffect(() => {
       </div>
 
       <div
-        className={`${isSearchOpen ? "hidden sm:flex" : "flex"} items-center border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 rounded-lg px-2 sm:px-3 h-[32px] sm:h-[36px]`}
+        className={`${
+          isSearchOpen ? "hidden sm:flex" : "flex"
+        } items-center border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 rounded-lg px-2 sm:px-3 h-[32px] sm:h-[36px]`}
       >
         <Button
           variant="ghost"
@@ -153,17 +141,15 @@ useEffect(() => {
             aria-label="Search movies"
           />
 
-          {searchQuery.length >= 3 && searcherMovies.length > 0 && (
-      <SearchDialog
-    onSearch={onSearchMovies}
-    movies={searcherMovies}
-    movieId={movieId}
-    searchQuery={searchQuery}
-    setSearchQuery={setSearchQuery}
-  />
-)}
-
-       
+          {searchQuery.length > 3 && (
+            <SearchDialog
+              onSearch={onSearchMovies}
+              movies={searcherMovies}
+              movieId={movieId}
+              searchQuery={searchQuery}
+              setSearchedMovies={setSearchedMovies}
+            />
+          )}
         </div>
       </div>
 
@@ -181,6 +167,7 @@ useEffect(() => {
               aria-label="Search movies"
               autoFocus
             />
+
             <Button
               onClick={clearHandle}
               size="icon"
@@ -190,13 +177,13 @@ useEffect(() => {
               <X className="w-4 h-4 text-gray-500" />
             </Button>
           </div>
-          {searchQuery && (
+          {searchQuery.length > 3 && (
             <SearchDialog
               onSearch={onSearchMovies}
               movies={searcherMovies}
               movieId={movieId}
               searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
+              setSearchedMovies={setSearchedMovies}
             />
           )}
         </div>
@@ -209,8 +196,12 @@ useEffect(() => {
         onClick={toggleTheme}
         aria-label={`Switch to ${isDarkTheme ? "light" : "dark"} mode`}
       >
-        {isDarkTheme ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        {isDarkTheme ? (
+          <Sun className="w-5 h-5" />
+        ) : (
+          <Moon className="w-5 h-5" />
+        )}
       </Button>
-    </header>
+    </div>
   );
 };

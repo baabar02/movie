@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
 
-export const getDiscoverApi = async (genreIds: string, page: string) => {
+export const getDiscoverApi = async (genreIds: string, page: number) => {
   const config = {
     headers: {
       "Content-type": "application/json",
@@ -15,5 +15,6 @@ export const getDiscoverApi = async (genreIds: string, page: string) => {
 
     config
   );
-  return result?.data?.results;
+
+  return result?.data;
 };

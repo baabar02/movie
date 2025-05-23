@@ -1,9 +1,19 @@
+"use client";
 import { useEffect, useState } from "react";
 import { getVideoApi } from "../hooks/get-video-api";
 import { PlayCircle } from "lucide-react";
 
 type VideoProps = {
   movieId: string;
+};
+
+type PosterMovies = {
+  adult: boolean;
+  backdrop_path: string;
+  id: number;
+  title: string;
+  overview: string;
+  vote_average: number;
 };
 
 export const Video = ({ movieId }: VideoProps) => {

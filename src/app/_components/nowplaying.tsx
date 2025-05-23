@@ -14,6 +14,7 @@ import { Play } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getHeroApi } from "../hooks/get-hero-api";
 import { MobileHero } from "./mobileHero";
+import { Video } from "./video";
 
 export const TMDB_IMAGE_SERVICE_URL = "https://image.tmdb.org/t/p/original";
 
@@ -24,6 +25,10 @@ type PosterMovies = {
   title: string;
   overview: string;
   vote_average: number;
+};
+
+type VideoProps = {
+  movieId: string;
 };
 
 export const NowPlay = () => {
@@ -83,13 +88,14 @@ export const NowPlay = () => {
                           </p>
                         </div>
 
-                        <div className="text-wrap text-white  w-[320px]">
+                        <div className="text-wrap text-white  w-[320px] line-clamp-3 backdrop-blur-md">
                           {el.overview}
                         </div>
                         <button onClick={() => playHandle(`${""}`)}>
                           <Badge className="cursor-pointer mt-2 w-[145px] h-[40px] border border-gray-300 bg-gray-200 dark:border-gray-600 text-foreground ">
                             <Play />
                             Watch Trailer
+                            {/* <Video /> */}
                           </Badge>
                         </button>
                       </div>

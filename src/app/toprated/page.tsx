@@ -2,23 +2,34 @@
 
 import { Movies } from "../_components/movies";
 import { useEffect, useState } from "react";
-import { getTopRated } from "../hooks/get-toprated-api";
+import { getTopRatedApi } from "../hooks/get-toprated-api";
 import Link from "next/link";
-import { Movie } from "@/types";
+import { Movie, MovieDetails } from "@/types";
 import Footer from "../_components/footer";
 import { ChevronLeft } from "lucide-react";
+import { useQueryState, parseAsInteger } from "nuqs";
 
 const TopRatedPage = () => {
-  const [toprated, setTopRated] = useState<Movie[]>([]);
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [movies, setMovies] = useState<MovieDetails[]>([]);
+  const [totalPage, setTotalPage] = useState(1);
 
   useEffect(() => {
     const topPlay = async () => {
-      const movies = await getTopRated();
-      const firstTen = movies?.splice(0, 10);
-      setTopRated(firstTen);
+      const topratedmovies = await getTopRatedApi(page);
+
+      setTotalPage(topratedmovies?.total_pages);
+      setMovies(topratedmovies?.results);
     };
     topPlay();
-  }, []);
+  }, [page]);
+
+  const handleNext = () => {
+    if (page < totalPage) setPage(page + 1);
+  };
+  const handlePrevious = () => {
+    if (page > 1) setPage(page - 1);
+  };
 
   return (
     <div>
@@ -35,10 +46,10 @@ const TopRatedPage = () => {
           </Link>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 justify-items-center">
-          {toprated.map((el, index) => {
+          {movies?.map((el, index) => {
             console.log(el);
             return (
-              <Link key={index} href={`/details/${el.id}`}>
+              <Link key={el.id} href={`/details/${el.id}`}>
                 <Movies
                   title={el.original_title}
                   vote={el.vote_average}
@@ -47,6 +58,31 @@ const TopRatedPage = () => {
               </Link>
             );
           })}
+        </div>
+        <div className="flex justify-center gap-4 mt-6">
+          <button
+            onClick={handlePrevious}
+            className={`px-4 py-2 rounded-md ${
+              page === 1
+                ? "bg-gray-300 text-gray-500"
+                : "bg-blue-600 text-white hover:bg-blue-700"
+            }`}
+          >
+            Previous
+          </button>
+          <span className="self-center">
+            Page {page} of {totalPage}
+          </span>
+          <button
+            onClick={handleNext}
+            className={`px-4 py-2 rounded-md ${
+              page === totalPage
+                ? "bg-gray-300 text-gray-500"
+                : "bg-blue-600 text-white hover:bg-blue-700"
+            }`}
+          >
+            Next
+          </button>
         </div>
       </div>
       <Footer />

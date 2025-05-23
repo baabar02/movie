@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getUpcomingApi } from "../hooks/get-upcoming-api";
 import Footer from "../_components/footer";
+import { parseAsInteger, useQueryState } from "nuqs";
+import { MovieDetails } from "@/types";
 
 type UpcomingMovies = {
   id: string;
@@ -18,18 +20,32 @@ type UpcomingMovies = {
 
 const UpcomingPage = () => {
   const [upComing, setUpcoming] = useState<UpcomingMovies[]>([]);
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [movies, setMovies] = useState<MovieDetails[]>([]);
+  const [totalPage, setTotalPage] = useState(1);
 
   useEffect(() => {
     const upPlay = async () => {
       const response = await getUpcomingApi();
       const firstTen = response?.results.splice(0, 20);
       setUpcoming(firstTen);
+
+      const tuhianGenreIinKinonuud = await getUpcomingApi();
+      setTotalPage(tuhianGenreIinKinonuud.total_pages);
+      setMovies(tuhianGenreIinKinonuud.results);
     };
     upPlay();
-  }, []);
+  }, [page]);
 
   const handleLogoClick = () => {
     // router.push("/upcoming");
+  };
+
+  const handleNext = () => {
+    if (page < totalPage) setPage(page + 1);
+  };
+  const handlePrevious = () => {
+    if (page > 1) setPage(page - 1);
   };
 
   return (
@@ -60,6 +76,31 @@ const UpcomingPage = () => {
               </Link>
             );
           })}
+        </div>
+        <div className="flex justify-center gap-4 mt-6">
+          <button
+            onClick={handlePrevious}
+            className={`px-4 py-2 rounded-md ${
+              page === 1
+                ? "bg-gray-300 text-gray-500"
+                : "bg-blue-600 text-white hover:bg-blue-700"
+            }`}
+          >
+            Previous
+          </button>
+          <span className="self-center">
+            Page {page} of {totalPage}
+          </span>
+          <button
+            onClick={handleNext}
+            className={`px-4 py-2 rounded-md ${
+              page === totalPage
+                ? "bg-gray-300 text-gray-500"
+                : "bg-blue-600 text-white hover:bg-blue-700"
+            }`}
+          >
+            Next
+          </button>
         </div>
       </div>
       <Footer />

@@ -1,7 +1,7 @@
 import { Movies } from "./movies";
 import { ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
-import { getTopRated } from "../hooks/get-toprated-api";
+import { getTopRatedApi } from "../hooks/get-toprated-api";
 import Link from "next/link";
 import { Movie } from "@/types";
 
@@ -10,8 +10,8 @@ const TopRated = () => {
 
   useEffect(() => {
     const topPlay = async () => {
-      const movies = await getTopRated();
-      const firstTen = movies?.splice(0, 10);
+      const movies = await getTopRatedApi();
+      const firstTen = movies.results?.splice(0, 10);
       setTopRated(firstTen);
     };
     topPlay();
