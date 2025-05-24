@@ -164,7 +164,7 @@ export const Header = ({ movieId }: SearchDialogProps) => {
               onChange={handleSearch}
               className="border-none bg-transparent focus:ring-0 text-xs w-full h-full"
               placeholder="Search movies..."
-              aria-label="Search movies"
+              aria-label="Search movies "
               autoFocus
             />
 

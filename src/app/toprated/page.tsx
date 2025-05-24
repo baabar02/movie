@@ -1,28 +1,51 @@
+
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import { Movies } from "../_components/movies";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
-import { getTopRatedApi } from "../hooks/get-toprated-api";
 import Link from "next/link";
-import { Movie, MovieDetails } from "@/types";
+import { getUpcomingApi } from "../hooks/get-upcoming-api";
 import Footer from "../_components/footer";
-import { ChevronLeft } from "lucide-react";
-import { useQueryState, parseAsInteger } from "nuqs";
+import { parseAsInteger, useQueryState } from "nuqs";
+import { MovieDetails } from "@/types";
+import { getTopRatedApi } from "../hooks/get-toprated-api";
 
-const TopRatedPage = () => {
+type UpcomingMovies = {
+  id: string;
+  poster_path: string;
+  original_title: string;
+  vote_average: number | string;
+  backdrop_path: string;
+};
+
+const TopRated = () => {
+  const [toprated, setTopRated] = useState<UpcomingMovies[]>([]);
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [movies, setMovies] = useState<MovieDetails[]>([]);
   const [totalPage, setTotalPage] = useState(1);
 
   useEffect(() => {
-    const topPlay = async () => {
-      const topratedmovies = await getTopRatedApi(page);
+    const upPlay = async () => {
+      const response = await getTopRatedApi(page);
+      // const firstTen = response?.results.splice(0, 
+      // 20);
+      // setMovies(response.results)
+      // setTopRated(firstTen);
 
-      setTotalPage(topratedmovies?.total_pages);
-      setMovies(topratedmovies?.results);
+      const tuhianGenreIinKinonuud = await getTopRatedApi(page);
+      console.log(tuhianGenreIinKinonuud,"top");
+      
+      // setTotalPage(tuhianGenreIinKinonuud.total_pages);
+      // setMovies(tuhianGenreIinKinonuud.results);
     };
-    topPlay();
+    upPlay();
   }, [page]);
+
+  const handleLogoClick = () => {
+    // router.push("/upcoming");
+  };
 
   const handleNext = () => {
     if (page < totalPage) setPage(page + 1);
@@ -33,28 +56,29 @@ const TopRatedPage = () => {
 
   return (
     <div>
-      <div className="w-full max-w-screen-xl  sm:px-6 lg:px-8 py-6   gap-[10px] px-5">
+      <div className="w-full max-w-screen-xl px-4 sm:px-6 lg:px-8 py-6  gap-[10px]">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">
-            Top Rated
+            Toprated movies
           </h1>
           <Link
             href={`/`}
             className=" items-center gap-1 text-sm sm:text-base text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 cursor-pointer flex"
           >
-            back <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-4 h-4" /> Back
           </Link>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 justify-items-center">
-          {movies?.map((el, index) => {
-            console.log(el);
+          {movies.map((el, index) => {
             return (
-              <Link key={el.id} href={`/details/${el.id}`}>
-                <Movies
-                  title={el.original_title}
-                  vote={el.vote_average}
-                  image={el.backdrop_path}
-                />
+              <Link key={index} href={`/details/${el.id}`}>
+                <div className="">
+                  <Movies
+                    title={el.original_title}
+                    image={el.backdrop_path}
+                    vote={el.vote_average}
+                  />
+                </div>
               </Link>
             );
           })}
@@ -90,4 +114,4 @@ const TopRatedPage = () => {
   );
 };
 
-export default TopRatedPage;
+export default TopRated;

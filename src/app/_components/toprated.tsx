@@ -3,16 +3,35 @@ import { ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getTopRatedApi } from "../hooks/get-toprated-api";
 import Link from "next/link";
-import { Movie } from "@/types";
+import { Movie, MovieDetails } from "@/types";
+import { parseAsInteger, useQueryState } from "nuqs";
+
+type UpcomingMovies = {
+  id: string;
+  poster_path: string;
+  original_title: string;
+  vote_average: number | string;
+  backdrop_path: string;
+};
 
 const TopRated = () => {
-  const [toprated, setTopRated] = useState<Movie[]>([]);
+  const [toprated, setTopRated] = useState<UpcomingMovies[]>([]);
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [movies, setMovies] = useState<MovieDetails[]>([]);
+  const [totalPage, setTotalPage] = useState(1);
 
   useEffect(() => {
     const topPlay = async () => {
-      const movies = await getTopRatedApi();
-      const firstTen = movies.results?.splice(0, 10);
-      setTopRated(firstTen);
+      const movies = await getTopRatedApi(page);
+      const firstTen = movies?.results.splice(0, 10);
+    
+      // setTopRated(firstTen);
+
+        const tuhianGenreIinKinonuud = await getTopRatedApi(page);
+      console.log(tuhianGenreIinKinonuud,"top");
+      
+      setTotalPage(tuhianGenreIinKinonuud.total_pages);
+      setMovies(tuhianGenreIinKinonuud?.total_results);
     };
     topPlay();
   }, []);

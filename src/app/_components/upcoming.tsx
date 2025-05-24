@@ -37,8 +37,8 @@ const Upcoming = () => {
   };
 
   return (
-    <div className="w-full max-w-screen-xl px-4 sm:px-6 lg:px-8 py-6  gap-[10px]">
-      <div className="flex justify-between items-center mb-6">
+    <div className="w-full max-w-screen-xl items-center px-4 sm:px-6 lg:px-8 py-6  gap-[10px]">
+      <div className="flex justify-between  mb-6">
         <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">
           Upcoming
         </h1>

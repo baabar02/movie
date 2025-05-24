@@ -90,3 +90,12 @@ interface VideoResponse {
   id: number;
   results: { id: string; key: string; name: string; type: string };
 }
+
+
+
+export interface TMDBResponse {
+  page: number;
+  results: Movie[];
+  total_pages: number;
+  total_results: number;
+}
